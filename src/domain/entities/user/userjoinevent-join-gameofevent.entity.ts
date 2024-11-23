@@ -7,7 +7,4 @@ export type UserJoinEventJoinGameOfEventProps = {
 };
 
 export default class UserJoinEventJoinGameOfEventEntity extends Entity<UserJoinEventJoinGameOfEventProps> {
-    constructor(id: number, props: UserJoinEventJoinGameOfEventProps) {
-        super(id, props);
-    }
 }

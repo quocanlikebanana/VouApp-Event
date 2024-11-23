@@ -10,7 +10,4 @@ export type GameOfEventProps = {
 };
 
 export default class GameOfEventEntity extends Entity<GameOfEventProps> {
-    constructor(id: number, props: GameOfEventProps) {
-        super(id, props);
-    }
 }

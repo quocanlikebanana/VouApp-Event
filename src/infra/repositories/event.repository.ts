@@ -26,6 +26,9 @@ export default class EventRepository implements IEventRepository {
     }
 
     async updateById(event: EventEntity): Promise<void> {
+        if (!event.id) {
+            throw new RepositoryError('Event ID is required');
+        }
         const result = await this.databaseService.event.update({
             where: {
                 id: event.id

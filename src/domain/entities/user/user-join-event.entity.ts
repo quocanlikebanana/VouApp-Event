@@ -13,7 +13,4 @@ export type UserJoinEventProps = {
 };
 
 export default class UserJoinEventEntity extends Entity<UserJoinEventProps> {
-    constructor(id: number, props: UserJoinEventProps) {
-        super(id, props);
-    }
 }

@@ -7,7 +7,4 @@ export type UserJoinEventExchangePuzzleSetOfEventProps = {
 };
 
 export default class UserJoinEventExchangePuzzleSetOfEventEntity extends Entity<UserJoinEventExchangePuzzleSetOfEventProps> {
-    constructor(id: number, props: UserJoinEventExchangePuzzleSetOfEventProps) {
-        super(id, props);
-    }
 }

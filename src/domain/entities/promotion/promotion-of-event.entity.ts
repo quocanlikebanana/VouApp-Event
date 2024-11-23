@@ -11,7 +11,4 @@ export type PromotionOfEventProps = {
 };
 
 export default class PromotionOfEventEntity extends Entity<PromotionOfEventProps> {
-    constructor(id: number, props: PromotionOfEventProps) {
-        super(id, props);
-    }
 }

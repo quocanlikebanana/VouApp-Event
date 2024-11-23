@@ -7,7 +7,4 @@ export type PromotionOfEventForPuzzleSetOfEventProps = {
 };
 
 export default class PromotionOfEventForPuzzleSetOfEventEntity extends Entity<PromotionOfEventForPuzzleSetOfEventProps> {
-    constructor(id: number, props: PromotionOfEventForPuzzleSetOfEventProps) {
-        super(id, props);
-    }
 }

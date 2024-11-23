@@ -9,7 +9,4 @@ export type RewardRuleForGameOfEventProps = {
 };
 
 export default class RewardRuleForGameOfEventEntity extends Entity<RewardRuleForGameOfEventProps> {
-    constructor(id: number, props: RewardRuleForGameOfEventProps) {
-        super(id, props);
-    }
 }

@@ -9,7 +9,4 @@ export type PuzzleOfEventProps = {
 };
 
 export default class PuzzleOfEventEntity extends Entity<PuzzleOfEventProps> {
-    constructor(id: number, props: PuzzleOfEventProps) {
-        super(id, props);
-    }
 }

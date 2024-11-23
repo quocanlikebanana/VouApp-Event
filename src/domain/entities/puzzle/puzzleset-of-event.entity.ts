@@ -10,7 +10,4 @@ export type PuzzleSetOfEventProps = {
 };
 
 export default class PuzzleSetOfEventEntity extends Entity<PuzzleSetOfEventProps> {
-    constructor(id: number, props: PuzzleSetOfEventProps) {
-        super(id, props);
-    }
 }

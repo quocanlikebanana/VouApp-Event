@@ -7,7 +7,4 @@ export type RewardProps = {
 };
 
 export default class RewardEntity extends Entity<RewardProps> {
-    constructor(id: number, props: RewardProps) {
-        super(id, props);
-    }
 }
