@@ -2,7 +2,7 @@ import { Catch, ArgumentsHost, HttpStatus, HttpException, ConsoleLogger } from "
 import { BaseExceptionFilter } from "@nestjs/core";
 import { Request, Response } from "express";
 import { PrismaClientKnownRequestError, PrismaClientRustPanicError, PrismaClientUnknownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/library";
-import { DomainError as DomainError } from "./domain/common/domain.err";
+import { DomainError as DomainError } from "./domain/common/errors/domain.err";
 import { UsecaseError } from "./usecases/common/usecase.err";
 
 // Define the error response format

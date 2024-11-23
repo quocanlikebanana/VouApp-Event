@@ -5,7 +5,6 @@ import { UsecaseModule } from 'src/usecases/usecase.module';
 import LocalStrategy from './common/passport/local.strategy';
 import JwtStrategy from './common/passport/jwt.strategy';
 import { RawDatabaseModule } from './common/test/raw-db.module';
-import { InjectController } from './injection/user.inject.controller';
 import TestInjectLocalStrategy from './common/passport/test-sqli.local.strategy';
 
 @Module({
@@ -13,7 +12,6 @@ import TestInjectLocalStrategy from './common/passport/test-sqli.local.strategy'
 	controllers: [
 		UserController,
 		AuthController,
-		InjectController,
 	],
 	providers: [
 		LocalStrategy,
