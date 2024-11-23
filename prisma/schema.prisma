@@ -40,12 +40,13 @@ model Event {
 }
 
 model UserJoinEvent {
-    id            Int     @id @default(autoincrement())
+    id            Int      @id @default(autoincrement())
     userId        Int
     userFirstName String
     userLastName  String
     userEmail     String
     userFacebook  String?
+    joinDate      DateTime
 
     eventId Int
     Event   Event @relation(fields: [eventId], references: [id])
@@ -71,8 +72,8 @@ model UserJoinEvent_Has_PuzzleOfEvent {
 }
 
 model UserJoinEvent_Exchange_PuzzleSetOfEvent {
-    id   Int      @id @default(autoincrement())
-    date DateTime
+    id           Int      @id @default(autoincrement())
+    exchangeDate DateTime
 
     userJoinEventId Int
     UserJoinEvent   UserJoinEvent @relation(fields: [userJoinEventId], references: [id])
@@ -152,7 +153,8 @@ model Promotion_Of_Event {
 
 enum Metric {
     TOP
-    HIGHSCORE
+    RANK
+    SCORE
 }
 
 enum RewardType {
@@ -180,7 +182,7 @@ model Reward {
     type                RewardType // Promotion or Puzzle
 
     Reward_RuleFor_GameOfEvent Reward_RuleFor_GameOfEvent[]
-    History                    History[]
+    History                    UserJoinEventJoinGameOfEvent_History[]
 
     @@unique([promotionOrPuzzleId, type, quantity])
 }
@@ -195,12 +197,12 @@ model UserJoinEvent_Join_GameOfEvent {
     userJoinEventId Int
     UserJoinEvent   UserJoinEvent? @relation(fields: [userJoinEventId], references: [id])
 
-    Histories History[]
+    Histories UserJoinEventJoinGameOfEvent_History[]
 
     @@unique([gameOfEventId, userJoinEventId])
 }
 
-model History {
+model UserJoinEventJoinGameOfEvent_History {
     id    Int      @id @default(autoincrement())
     stats Json
     date  DateTime
@@ -213,4 +215,5 @@ model History {
     UserJoinEvent_Join_GameOfEvent UserJoinEvent_Join_GameOfEvent @relation(fields: [userJoinEventJoinGameOfEventId], references: [id])
 
     @@unique([order, userJoinEventJoinGameOfEventId])
+    @@map("History")
 }

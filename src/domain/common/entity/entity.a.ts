@@ -1,15 +1,15 @@
 import { DomainError } from "../errors/domain.err";
 
 export abstract class Entity<T> {
-	private readonly id: number;
-	protected readonly createdAt: Date;
-	protected readonly props: T;
+	private readonly _id: number;
+	protected readonly _createdAt: Date;
+	protected readonly _props: T;
 
 	constructor(id: number, props: T) {
 		this.validate(props);
-		this.id = id;
-		this.props = props;
-		this.createdAt = new Date();
+		this._id = id;
+		this._props = props;
+		this._createdAt = new Date();
 	}
 
 	// Business logic validation: The relations between the properties of the entity not the single properties themselves (format, length, notnull, etc)
@@ -20,6 +20,14 @@ export abstract class Entity<T> {
 	}
 
 	public equals(entity: Entity<T>): boolean {
-		return entity.id === this.id;
+		return entity._id === this._id;
+	}
+
+	public get id(): number {
+		return this._id;
+	}
+
+	public get props(): T {
+		return this._props;
 	}
 }

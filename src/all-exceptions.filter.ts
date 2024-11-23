@@ -3,7 +3,7 @@ import { BaseExceptionFilter } from "@nestjs/core";
 import { Request, Response } from "express";
 import { PrismaClientKnownRequestError, PrismaClientRustPanicError, PrismaClientUnknownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/library";
 import { DomainError as DomainError } from "./domain/common/errors/domain.err";
-import { UsecaseError } from "./usecases/common/usecase.err";
+import { CommandError } from "./commands/common/error/usecase.err";
 
 // Define the error response format
 type MyError = {
@@ -32,7 +32,7 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 			responseError.response = `Domain: ${exception.message}`;
 		}
 
-		else if (exception instanceof UsecaseError) {
+		else if (exception instanceof CommandError) {
 			responseError.statusCode = HttpStatus.BAD_REQUEST;
 			responseError.response = exception.message;
 		}
