@@ -5,6 +5,7 @@ import { ControllerModule } from './controller/controller.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigModule as MyConfigModule } from './config/config.module';
+import { DomainModule } from './domain/domain.module';
 
 
 @Module({
@@ -32,6 +33,7 @@ import { ConfigModule as MyConfigModule } from './config/config.module';
 
 		ControllerModule,
 		MyConfigModule,
+		DomainModule,
 	],
 	providers: [
 		{

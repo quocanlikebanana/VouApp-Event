@@ -98,7 +98,6 @@ model Puzzle_Of_Event {
 
 model PuzzleSet_Of_Event {
     id            Int    @id @default(autoincrement())
-    possibility   Float
     puzzleSetId   Int
     puzzleSetName String
 
@@ -107,14 +106,15 @@ model PuzzleSet_Of_Event {
 
     Puzzle_Of_Events                         Puzzle_Of_Event[]
     UserJoinEvent_Exchange_PuzzleSetOfEvents UserJoinEvent_Exchange_PuzzleSetOfEvent[]
-    PromotionOfEvent_For_PuzzleSetOfEvents   PromotionOfEvent_For_PuzzleSetOfEvent[]
+    PromotionOfEvent_For_PuzzleSetOfEvents   PromotionOfEvent_Prize_PuzzleSetOfEvent[]
 
     @@unique([puzzleSetId, eventId])
 }
 
-model PromotionOfEvent_For_PuzzleSetOfEvent {
-    id       Int @id @default(autoincrement())
-    quantity Int
+model PromotionOfEvent_Prize_PuzzleSetOfEvent {
+    id          Int   @id @default(autoincrement())
+    quantity    Int
+    possibility Float
 
     puzzleSetOfEventId Int
     PuzzleSet_Of_Event PuzzleSet_Of_Event @relation(fields: [puzzleSetOfEventId], references: [id])
@@ -148,7 +148,7 @@ model Promotion_Of_Event {
     eventId Int
     Event   Event @relation(fields: [eventId], references: [id])
 
-    PromotionOfEvent_For_PuzzleSetOfEvents PromotionOfEvent_For_PuzzleSetOfEvent[]
+    PromotionOfEvent_For_PuzzleSetOfEvents PromotionOfEvent_Prize_PuzzleSetOfEvent[]
 }
 
 enum Metric {

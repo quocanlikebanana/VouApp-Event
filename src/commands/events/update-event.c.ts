@@ -1,6 +1,6 @@
 import { ICommandHandler } from "src/commands/common/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
-import IEventRepository from "src/domain/contracts/repositories/event.repository.i";
+import IEventRepository from "src/domain/repositories/event.repository.i";
 
 type UpdateEventParam = {
     id: number;
@@ -22,7 +22,7 @@ export default class UpdateEventHandler implements ICommandHandler<Partial<Updat
         if (!entity) {
             throw new DomainError('Event not found');
         }
-        const newEntity = entity.updateNew(param);
+        const newEntity = entity.recreate(param);
         await this.eventRepository.updateById(newEntity);
     }
 }

@@ -1,8 +1,9 @@
-import IEventRepository from "src/domain/contracts/repositories/event.repository.i";
-import { EventEntity } from "src/domain/entities/envent.entity";
+import IEventRepository from "src/domain/repositories/event.repository.i";
+import { EventEntity } from "src/domain/entities/event/event.entity";
 import { PrismaDatabaseService } from "../common/database/database.service";
 import RepositoryError from "../common/error/repository.err";
 import { Injectable } from "@nestjs/common";
+import { $Enums, EventStatus } from "@prisma/client";
 
 @Injectable()
 export default class EventRepository implements IEventRepository {
