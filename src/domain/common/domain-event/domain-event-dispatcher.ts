@@ -1,5 +1,5 @@
-import { PendingOutdatedEvent } from "src/domain/entities/event/events/pending-outdated.event";
-import { PendingOutdatedEventHandler } from "src/domain/entities/event/handlers/pending-outdated.event.handler";
+import { EventStatusTrigger } from "src/domain/entities/event/events/event-status-trigger.event";
+import { EventStatusTriggerEventHandler } from "src/domain/entities/event/handlers/event-status-trigger.eh";
 import { DomainEventHandler } from "./domain-event-handler.i";
 import { DomainEventBase } from "./domain-event.base";
 import { Injectable } from "@nestjs/common";
@@ -17,9 +17,9 @@ export class DomainEventDispatcher {
     } = {};
 
     constructor(
-        private readonly pendingOutdatedEventHandler: PendingOutdatedEventHandler
+        private readonly pendingOutdatedEventHandler: EventStatusTriggerEventHandler
     ) {
-        DomainEventDispatcher.register(PendingOutdatedEvent, this.pendingOutdatedEventHandler);
+        DomainEventDispatcher.register(EventStatusTrigger, this.pendingOutdatedEventHandler);
     }
 
     private static register<T extends DomainEventBase>(eventClass: new (...args: any[]) => T, handler: DomainEventHandler<T>): void {

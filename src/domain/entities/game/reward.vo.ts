@@ -2,7 +2,7 @@ import { Entity } from "src/domain/common/entity/entity.a";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import { RewardValueType } from "src/domain/common/types/enums";
 
-type RewardProps = {
+export type RewardProps = {
     rewardId: number;
     type: RewardValueType;
     quantity: number;

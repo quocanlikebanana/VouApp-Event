@@ -1,12 +1,15 @@
 import { Entity } from "src/domain/common/entity/entity.a";
 import RewardRuleValueObject from "./reward-rule.vo";
 import { DomainError } from "src/domain/common/errors/domain.err";
+import RewardValueObject from "./reward.vo";
+import { Metric } from "src/domain/common/types/enums";
 
 export type GameProps = {
-    gameId: number;
-    gameName: string;
-    gameDescription: string;
-    eventId: number;
+    ex_game: {
+        id: number;
+        name: string;
+        description: string;
+    }
     rewardRules: RewardRuleValueObject[];
 };
 
@@ -15,9 +18,35 @@ export default class GameEntity extends Entity<GameProps> {
         if (props.rewardRules.length === 0) {
             throw new DomainError("Game must have at least one reward rule");
         }
-        const totalPossibility = props.rewardRules.reduce((acc, rule) => acc + rule.props.possibility, 0);
-        if (totalPossibility > 1) {
-            throw new DomainError("The sum of all possibilities must not greater than 1");
+    }
+
+    static create(props: GameProps): GameEntity {
+        return new GameEntity(props);
+    }
+
+    private checkReward(metric: Metric, value: number): RewardValueObject[] | null {
+        let rewards: RewardValueObject[] | null = null;
+        const filteredRules = this.props.rewardRules.filter(rule => rule.props.metric === metric);
+        // ASC for TOP, DESC for SCORE
+        const sortedRules = filteredRules.sort(
+            (a, b) => metric === Metric.TOP ?
+                a.props.threshold - b.props.threshold :
+                b.props.threshold - a.props.threshold);
+        for (const rule of sortedRules) {
+            if ((metric === Metric.TOP && value <= rule.props.threshold) ||
+                (metric === Metric.SCORE && value >= rule.props.threshold)) {
+                rewards = rule.props.rewards;
+                break;
+            }
         }
+        return rewards;
+    }
+
+    public checkTopReward(top: number): RewardValueObject[] | null {
+        return this.checkReward(Metric.TOP, top);
+    }
+
+    public checkScoreReward(score: number): RewardValueObject[] | null {
+        return this.checkReward(Metric.SCORE, score);
     }
 }

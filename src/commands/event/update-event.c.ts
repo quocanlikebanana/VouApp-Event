@@ -1,20 +1,14 @@
 import { ICommandHandler } from "src/commands/common/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IEventRepository from "src/domain/repositories/event.repository.i";
+import { CreateEventParam } from "./create-event.c";
 
-type UpdateEventParam = {
-    id: number;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-
-    // Todo: update on games, promotions, and puzzles
-}
+type UpdateEventParam = Partial<CreateEventParam> & { id: number };
 
 export default class UpdateEventHandler implements ICommandHandler<Partial<UpdateEventParam>, void> {
     constructor(
-        private readonly eventRepository: IEventRepository
+        private readonly eventRepository: IEventRepository,
+
     ) { }
 
     async execute(param: Partial<UpdateEventParam>): Promise<void> {
@@ -22,7 +16,10 @@ export default class UpdateEventHandler implements ICommandHandler<Partial<Updat
         if (!entity) {
             throw new DomainError('Event not found');
         }
-        const newEntity = entity.recreate(param);
-        await this.eventRepository.updateById(newEntity);
+        entity.update(param);
+        await this.eventRepository.update(entity);
+
     }
 }
+
+export { UpdateEventParam };

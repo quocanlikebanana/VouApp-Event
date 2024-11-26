@@ -2,24 +2,24 @@ import { Entity } from "src/domain/common/entity/entity.a";
 import { checkAllPropertiesNotNull, removeNullValues } from "../../common/helpers";
 import { DomainError } from "../../common/errors/domain.err";
 import { DomainEventDispatcher } from "src/domain/common/domain-event/domain-event-dispatcher";
-import { PendingOutdatedEvent } from "./events/pending-outdated.event";
+import { EventStatusTrigger } from "./events/event-status-trigger.event";
 import { EventStatus } from "src/domain/common/types/enums";
+import EventStatusContext from "./subs/event.state.dp";
 
 export type EventProps = {
     name: string;
-    eventStatus: EventStatus;
     description: string;
+    _eventStatusContext: EventStatusContext;
     startDate: Date;
     endDate: Date;
-    partner: {
-        partnerId: number;
-        partnerName: string;
+    ex_partner: {
+        id: number;
+        name: string;
     }
-
-    // More
 };
 
-export type CreateEventProps = Omit<EventProps, "eventStatus">;
+export type CreateEventProps = Omit<EventProps, "_eventStatusContext">;
+export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 
 export class EventEntity extends Entity<EventProps> {
     protected validate(props: EventProps): void {
@@ -27,20 +27,18 @@ export class EventEntity extends Entity<EventProps> {
         if (props.startDate >= props.endDate) {
             throw new DomainError("Start date must be before end date");
         }
+        // Time status peristence
         const now = new Date();
-        if (props.startDate <= now) {
-            do {
-                if (props.eventStatus === EventStatus.PENDING) {
-                    this.props.eventStatus = EventStatus.REJECTED;
-                }
-                else if (props.eventStatus === EventStatus.APPROVED) {
-                    this.props.eventStatus = EventStatus.STARTED;
-                }
-                else {
-                    break;
-                }
-                DomainEventDispatcher.dispatch(new PendingOutdatedEvent(this.id));
-            } while (false);
+        try {
+            if (props.startDate <= now) {
+                this.props._eventStatusContext.start();
+            }
+            else if (props.endDate <= now) {
+                this.props._eventStatusContext.end();
+            }
+            DomainEventDispatcher.dispatch(new EventStatusTrigger(this.id, props._eventStatusContext.getState()));
+        } catch (error) {
+            throw (error);
         }
     }
 
@@ -49,31 +47,24 @@ export class EventEntity extends Entity<EventProps> {
         if (event.startDate <= now) {
             throw new DomainError("Start date must be in the future");
         }
-        const newEvent = new EventEntity({ ...event, eventStatus: EventStatus.PENDING });
+        const newEvent = new EventEntity({ ...event, _eventStatusContext: new EventStatusContext(EventStatus.PENDING) });
         return newEvent;
     }
 
-    recreate(event: Partial<EventProps>): EventEntity {
-        if (this.props.eventStatus === EventStatus.PENDING || this.props.eventStatus === EventStatus.REJECTED) {
-            const notNullEvent = removeNullValues(event);
-            const newProps = { ...this.props, ...notNullEvent };
-            const newEvent = EventEntity.create(newProps);
-            return newEvent;
-        }
-        throw new DomainError("Cannot update event that is not in PENDING or REJECTED status");
+    update(event: Partial<UpdateEventProps>): void {
+        this.props._eventStatusContext.update();
+        const notNullProps = removeNullValues(event);
+        const newProps = { ...this.props, ...notNullProps };
+        this.props = newProps;
     }
 
     checkDeleteable(): void {
-        if (this.props.eventStatus === EventStatus.STARTED) {
+        if (this.props._eventStatusContext.getState() === EventStatus.STARTED) {
             throw new DomainError("Cannot delete event that is STARTED");
         }
     }
 
-    approve(): EventEntity {
-        if (this.props.eventStatus === EventStatus.PENDING) {
-            const newProps = { ...this.props, eventStatus: EventStatus.APPROVED };
-            return new EventEntity(newProps, this.id);
-        }
-        throw new DomainError("Cannot approve event that is not in PENDING status");
+    approve(): void {
+        this.props._eventStatusContext.approve();
     }
 }
