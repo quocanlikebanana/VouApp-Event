@@ -20,10 +20,6 @@ export default class GameEntity extends Entity<GameProps> {
         }
     }
 
-    static create(props: GameProps): GameEntity {
-        return new GameEntity(props);
-    }
-
     private checkReward(metric: Metric, value: number): RewardValueObject[] | null {
         let rewards: RewardValueObject[] | null = null;
         const filteredRules = this.props.rewardRules.filter(rule => rule.props.metric === metric);

@@ -1,4 +1,4 @@
-import { ICommandHandler } from "src/commands/common/command.handler.i";
+import { ICommandHandler } from "src/commands/common/abstract/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IEventRepository from "src/domain/repositories/event.repository.i";
 
