@@ -1,5 +1,5 @@
-import { EventStatusTrigger } from "src/domain/entities/event/events/event-status-trigger.event";
-import { EventStatusTriggerEventHandler } from "src/domain/entities/event/handlers/event-status-trigger.eh";
+import { EventStatusTrigger } from "src/domain/event/events/event-status-trigger.event";
+import { EventStatusTriggerEventHandler } from "src/domain/event/handlers/event-status-trigger.eh";
 import { DomainEventHandler } from "./domain-event-handler.i";
 import { DomainEventBase } from "./domain-event.base";
 import { Injectable } from "@nestjs/common";

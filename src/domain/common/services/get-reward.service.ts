@@ -1,7 +1,7 @@
-import { RewardValueType as RewardType } from "../common/types/enums";
-import RewardValueObject from "../entities/game/reward.vo";
-import PromotionEntity from "../entities/promotion/promotion.entity";
-import PuzzleValueObject from "../entities/puzzle/puzzle.vo";
+import { RewardValueType as RewardType } from "../types/enums";
+import RewardValueObject from "../../game/reward.vo";
+import PromotionEntity from "../../promotion/promotion.entity";
+import PuzzleValueObject from "../../puzzle/puzzle.vo";
 import IPromotionRepository from "../repositories/promotion.repository.i";
 import IPuzzleSetRepository from "../repositories/puzzle-set.repository.i";
 

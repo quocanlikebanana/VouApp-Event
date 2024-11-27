@@ -1,12 +1,12 @@
-import { ICommandHandler } from "src/commands/common/abstract/command.handler.i";
+import { ICommand } from "src/commands/common/abstract/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
-import IEventRepository from "src/domain/repositories/event.repository.i";
+import IEventRepository from "src/domain/common/repositories/event.repository.i";
 
 type DeleteEventParam = {
     id: number;
 }
 
-export default class DeleteEventHandler implements ICommandHandler<DeleteEventParam, void> {
+export default class DeleteEventCommand implements ICommand<DeleteEventParam, void> {
     constructor(
         private readonly eventRepository: IEventRepository
     ) { }

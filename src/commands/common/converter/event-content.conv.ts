@@ -1,11 +1,11 @@
-import GameEntity from "src/domain/entities/game/game.entity";
+import GameEntity from "src/domain/game/game.entity";
 import { Game, Promotion, PuzzleSet } from "../types/event.type";
-import RewardRuleValueObject from "src/domain/entities/game/reward-rule.vo";
-import RewardValueObject from "src/domain/entities/game/reward.vo";
-import PuzzleSetEntity from "src/domain/entities/puzzle/puzzleset.entity";
-import PuzzleValueObject from "src/domain/entities/puzzle/puzzle.vo";
-import PuzzleSetPrizeValueObject from "src/domain/entities/puzzle/puzzle-set-prize.vo";
-import PromotionEntity from "src/domain/entities/promotion/promotion.entity";
+import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
+import RewardValueObject from "src/domain/game/reward.vo";
+import PuzzleSetEntity from "src/domain/puzzle/puzzleset.entity";
+import PuzzleValueObject from "src/domain/puzzle/puzzle.vo";
+import PuzzleSetPrizeValueObject from "src/domain/puzzle/puzzle-set-prize.vo";
+import PromotionEntity from "src/domain/promotion/promotion.entity";
 
 export function Games_GameEntities(games: Game[]): GameEntity[] {
     return games.map(game => {

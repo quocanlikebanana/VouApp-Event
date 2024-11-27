@@ -1,5 +1,5 @@
 import { EventStatus } from "@prisma/client";
-import { EventEntity } from "src/domain/entities/event/event.entity";
+import { EventEntity } from "src/domain/event/event.entity";
 
 export default abstract class IEventRepository {
     abstract getById(id: number): Promise<EventEntity>;

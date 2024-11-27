@@ -1,6 +1,6 @@
 import { Entity } from "src/domain/common/entity/entity.a";
-import { checkAllPropertiesNotNull, removeNullValues } from "../../common/helpers";
-import { DomainError } from "../../common/errors/domain.err";
+import { checkAllPropertiesNotNull, removeNullValues } from "../common/helpers";
+import { DomainError } from "../common/errors/domain.err";
 import { DomainEventDispatcher } from "src/domain/common/domain-event/domain-event-dispatcher";
 import { EventStatusTrigger } from "./events/event-status-trigger.event";
 import { EventStatus } from "src/domain/common/types/enums";

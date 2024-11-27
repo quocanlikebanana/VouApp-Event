@@ -1,15 +1,15 @@
-import { ICommandHandler } from "src/commands/common/abstract/command.handler.i";
+import { ICommand } from "src/commands/common/abstract/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
-import IEventRepository from "src/domain/repositories/event.repository.i";
 import { CreateEventParam } from "./create-event.c";
-import IPromotionRepository from "src/domain/repositories/promotion.repository.i";
-import IPuzzleSetRepository from "src/domain/repositories/puzzle-set.repository.i";
-import IGameRepository from "src/domain/repositories/game.repository.i";
 import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "../common/converter/event-content.conv";
+import IEventRepository from "src/domain/common/repositories/event.repository.i";
+import IGameRepository from "src/domain/common/repositories/game.repository.i";
+import IPuzzleSetRepository from "src/domain/common/repositories/puzzle-set.repository.i";
+import IPromotionRepository from "src/domain/common/repositories/promotion.repository.i";
 
 export type UpdateEventParam = Partial<CreateEventParam> & { id: number };
 
-export default class UpdateEventHandler implements ICommandHandler<Partial<UpdateEventParam>, void> {
+export default class UpdateEventCommand implements ICommand<Partial<UpdateEventParam>, void> {
     constructor(
         private readonly eventRepository: IEventRepository,
         private readonly gameRepository: IGameRepository,

@@ -1,13 +1,13 @@
-import { ICommandHandler } from "src/commands/common/abstract/command.handler.i";
-import IEventRepository from "src/domain/repositories/event.repository.i";
-import { EventEntity } from "src/domain/entities/event/event.entity";
-import IGameRepository from "src/domain/repositories/game.repository.i";
-import GameEntity from "src/domain/entities/game/game.entity";
-import PuzzleSetEntity from "src/domain/entities/puzzle/puzzleset.entity";
-import IPuzzleSetRepository from "src/domain/repositories/puzzle-set.repository.i";
-import IPromotionRepository from "src/domain/repositories/promotion.repository.i";
+import { ICommand } from "src/commands/common/abstract/command.handler.i";
+import { EventEntity } from "src/domain/event/event.entity";
+import GameEntity from "src/domain/game/game.entity";
+import PuzzleSetEntity from "src/domain/puzzle/puzzleset.entity";
 import { Game, Promotion, PuzzleSet } from "../common/types/event.type";
 import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "../common/converter/event-content.conv";
+import IEventRepository from "src/domain/common/repositories/event.repository.i";
+import IGameRepository from "src/domain/common/repositories/game.repository.i";
+import IPuzzleSetRepository from "src/domain/common/repositories/puzzle-set.repository.i";
+import IPromotionRepository from "src/domain/common/repositories/promotion.repository.i";
 
 export type CreateEventParam = {
 	name: string;
@@ -23,7 +23,7 @@ export type CreateEventParam = {
 	puzzleSets: PuzzleSet[];
 }
 
-export default class CreateEventHandler implements ICommandHandler<CreateEventParam, void> {
+export default class CreateEventCommand implements ICommand<CreateEventParam, void> {
 	constructor(
 		private readonly eventRepository: IEventRepository,
 		private readonly gameRepository: IGameRepository,

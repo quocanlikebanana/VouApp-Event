@@ -76,11 +76,11 @@ model UserJoinEvent_Exchange_PuzzleSetOfEvent {
     exchangeDate DateTime
     isWin        Boolean
 
-    userJoinEventId Int
-    UserJoinEvent   UserJoinEvent @relation(fields: [userJoinEventId], references: [id])
+    PuzzleSet_Of_Event   PuzzleSet_Of_Event? @relation(fields: [puzzleSet_Of_EventId], references: [id])
+    puzzleSet_Of_EventId Int?
 
-    promotionOfEventPrizePuzzleSetOfEventId Int
-    PromotionOfEventPrizePuzzleSetOfEvent   PromotionOfEvent_Prize_PuzzleSetOfEvent @relation(fields: [promotionOfEventPrizePuzzleSetOfEventId], references: [id])
+    UserJoinEvent   UserJoinEvent? @relation(fields: [userJoinEventId], references: [id])
+    userJoinEventId Int?
 }
 
 // Array of PuzzleSet, outside.
@@ -105,8 +105,9 @@ model PuzzleSet_Of_Event {
     eventId Int
     Event   Event @relation(fields: [eventId], references: [id])
 
-    Puzzle_Of_Events                       Puzzle_Of_Event[]
-    PromotionOfEvent_For_PuzzleSetOfEvents PromotionOfEvent_Prize_PuzzleSetOfEvent[]
+    Puzzle_Of_Events                        Puzzle_Of_Event[]
+    PromotionOfEvent_For_PuzzleSetOfEvents  PromotionOfEvent_Prize_PuzzleSetOfEvent[]
+    UserJoinEvent_Exchange_PuzzleSetOfEvent UserJoinEvent_Exchange_PuzzleSetOfEvent[]
 
     @@unique([puzzleSetId, eventId])
 }
@@ -118,9 +119,8 @@ model PromotionOfEvent_Prize_PuzzleSetOfEvent {
     puzzleSetOfEventId Int
     PuzzleSet_Of_Event PuzzleSet_Of_Event @relation(fields: [puzzleSetOfEventId], references: [id])
 
-    promotionOfEventId                      Int
-    Promotion_Of_Event                      Promotion_Of_Event                        @relation(fields: [promotionOfEventId], references: [id])
-    UserJoinEvent_Exchange_PuzzleSetOfEvent UserJoinEvent_Exchange_PuzzleSetOfEvent[]
+    promotionOfEventId Int
+    Promotion_Of_Event Promotion_Of_Event @relation(fields: [promotionOfEventId], references: [id])
 
     @@unique([puzzleSetOfEventId, promotionOfEventId])
 }

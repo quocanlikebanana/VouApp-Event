@@ -1,10 +1,9 @@
 import { ValueObject } from "src/domain/common/entity/value-object.a";
-import PuzzleSetPrizeValueObject from "../puzzle/puzzle-set-prize.vo";
+import PuzzleSetEntity from "../puzzle/puzzleset.entity";
 
 type UserExchangePuzzleSetProps = {
     exchangeDate: Date;
-    isWin: boolean;
-    puzzleSetPrize: PuzzleSetPrizeValueObject;
+    puzzleSetOfEventId: number;
 };
 
 export default class UserExchangePuzzleSetValueObject extends ValueObject<UserExchangePuzzleSetProps> {
