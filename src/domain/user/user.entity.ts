@@ -32,10 +32,10 @@ export default class UserEntity extends Entity<UserProps> {
         // Check if the user join the same game multiple times
         const gamgeIdSet = new Set<number>();
         for (const item of props.userJoinGame) {
-            if (gamgeIdSet.has(item.props.gameId)) {
+            if (gamgeIdSet.has(item.props.gameOfEventId)) {
                 throw new DomainError("User can only join a game once");
             }
-            gamgeIdSet.add(item.props.gameId);
+            gamgeIdSet.add(item.props.gameOfEventId);
         }
         // Reduce and accumulate if the user has the same puzzle multiple times
         const userHasPuzzleMap = props.userHasPuzzle.reduce((acc, item) => {
@@ -57,7 +57,7 @@ export default class UserEntity extends Entity<UserProps> {
         props.userHasPuzzle = Array.from(userHasPuzzleMap.values());
     }
 
-    reducePuzzle(puzzle: PuzzleValueObject, quantity: number): void {
+    removePuzzle(puzzle: PuzzleValueObject, quantity: number): void {
         const puzzleItem = this.props.userHasPuzzle.find(item => item.props.puzzle.props.ex_id === puzzle.props.ex_id);
         if (!puzzleItem) {
             throw new DomainError("User does not have the puzzle");
@@ -68,6 +68,19 @@ export default class UserEntity extends Entity<UserProps> {
         puzzleItem.props.quantity -= quantity;
         if (puzzleItem.props.quantity === 0) {
             this.props.userHasPuzzle = this.props.userHasPuzzle.filter(item => item.props.puzzle.props.ex_id !== puzzle.props.ex_id);
+        }
+    }
+
+    addPuzzle(puzzle: PuzzleValueObject, quantity: number): void {
+        const puzzleItem = this.props.userHasPuzzle.find(item => item.props.puzzle.props.ex_id === puzzle.props.ex_id);
+        if (puzzleItem) {
+            puzzleItem.props.quantity += quantity;
+        }
+        else {
+            this.props.userHasPuzzle.push(new UserHasPuzzleValueObject({
+                puzzle,
+                quantity
+            }));
         }
     }
 
@@ -99,11 +112,34 @@ export default class UserEntity extends Entity<UserProps> {
 
     joinGame(game: GameEntity): UserJoinGameValueObject {
         const userJoinGame = new UserJoinGameValueObject({
-            gameId: game.id,
+            gameOfEventId: game.id,
             turn: 0,
             histories: [],
         })
         this.props.userJoinGame.push(userJoinGame);
         return userJoinGame;
     }
+
+    takeTurn(game: GameEntity, turn: number): UserJoinGameValueObject {
+        const userJoinGame = this.props.userJoinGame.find(item => item.props.gameOfEventId === game.id);
+        if (!userJoinGame) {
+            throw new DomainError("Cannot add turn, user does not join the game");
+        }
+        userJoinGame.props.turn += turn;
+        return userJoinGame;
+    }
+
+    giveTurn(game: GameEntity, turn: number): UserJoinGameValueObject {
+        const userJoinGame = this.props.userJoinGame.find(item => item.props.gameOfEventId === game.id);
+        if (!userJoinGame) {
+            throw new DomainError("Cannot give turn, user does not join the game");
+        }
+        if (userJoinGame.props.turn < turn) {
+            throw new DomainError("User does not have enough turns");
+        }
+        userJoinGame.props.turn -= turn;
+        return userJoinGame;
+    }
+
+
 }

@@ -17,6 +17,6 @@ export default class ApproveEventCommand implements ICommand<ApproveEventParam, 
             throw new DomainError('Event not found');
         }
         entity.approve();
-        await this.eventRepository.update(entity);
+        await this.eventRepository.updateEventStatus(entity);
     }
 }

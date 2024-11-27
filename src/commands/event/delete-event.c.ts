@@ -17,6 +17,6 @@ export default class DeleteEventCommand implements ICommand<DeleteEventParam, vo
             throw new DomainError('Event not found');
         }
         entity.checkDeleteable();
-        await this.eventRepository.deleteById(param.id);
+        await this.eventRepository.delete(entity);
     }
 }

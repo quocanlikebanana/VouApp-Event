@@ -7,7 +7,10 @@ export default abstract class IUserRepository {
     abstract getById(id: number): Promise<UserEntity>;
     abstract create(user: UserEntity): Promise<void>;
     abstract remove(user: UserEntity): Promise<void>;
+    // Puzzle
     abstract updatePuzzleSet(user: UserEntity): Promise<void>;
     abstract addPuzzleSetExchange(user: UserEntity, puzzleSetExchangeOfUser: UserExchangePuzzleSetValueObject): Promise<void>;
+    // Game
     abstract addGame(user: UserEntity, userJoinGame: UserJoinGameValueObject): Promise<void>;
+    abstract updateGameTurn(user: UserEntity, userJoinGame: UserJoinGameValueObject): Promise<void>;
 }

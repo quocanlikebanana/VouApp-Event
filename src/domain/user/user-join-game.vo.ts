@@ -3,7 +3,7 @@ import UserJoinGameHistoryValueObject from "./user-join-game-history.vo";
 
 export type UserJoinGameProps = {
     turn: number;
-    gameId: number;
+    gameOfEventId: number;
     histories: UserJoinGameHistoryValueObject[];
 };
 
