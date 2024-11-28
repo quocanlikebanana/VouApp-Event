@@ -1,5 +1,5 @@
-import { Entity } from "src/domain/common/entity/entity.a";
 import { DomainError } from "src/domain/common/errors/domain.err";
+import AggregateRoot from "../common/entity/aggregate.a";
 
 export type PromotionProps = {
     ex_promotion: {
@@ -7,12 +7,12 @@ export type PromotionProps = {
         name: string;
         description: string;
     }
-    quantity: number;
+    quantityUseInEvent: number;
 };
 
-export default class PromotionEntity extends Entity<PromotionProps> {
+export default class PromotionAggregate extends AggregateRoot<PromotionProps> {
     protected validate(props: PromotionProps): void {
-        if (props.quantity < 0) {
+        if (props.quantityUseInEvent < 0) {
             throw new DomainError("Quantity must be positive");
         }
     }

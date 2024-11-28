@@ -4,7 +4,7 @@ import RewardValueObject from "../game/reward.vo";
 export type UserJoinGameHistoryProps = {
     date: Date;
     score: number;
-    reward?: RewardValueObject;
+    rewards: RewardValueObject[];
 };
 
 export default class UserJoinGameHistoryValueObject extends ValueObject<UserJoinGameHistoryProps> {

@@ -3,6 +3,7 @@ import RewardRuleValueObject from "./reward-rule.vo";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import RewardValueObject from "./reward.vo";
 import { Metric } from "src/domain/common/types/enums";
+import AggregateRoot from "../common/entity/aggregate.a";
 
 export type GameProps = {
     ex_game: {
@@ -13,7 +14,7 @@ export type GameProps = {
     rewardRules: RewardRuleValueObject[];
 };
 
-export default class GameEntity extends Entity<GameProps> {
+export default class GameAggregate extends AggregateRoot<GameProps> {
     protected validate(props: GameProps): void {
         if (props.rewardRules.length === 0) {
             throw new DomainError("Game must have at least one reward rule");

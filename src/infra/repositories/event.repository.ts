@@ -1,5 +1,5 @@
 import IEventRepository from "src/domain/repositories/event.repository.i";
-import { EventEntity } from "src/domain/event/event.entity";
+import { EventAggregate } from "src/domain/event/event.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
 import RepositoryError from "../common/error/repository.err";
 import { Injectable } from "@nestjs/common";
@@ -11,7 +11,7 @@ export default class EventRepository implements IEventRepository {
         private readonly databaseService: PrismaDatabaseService,
     ) { }
 
-    async createNew(event: EventEntity): Promise<number> {
+    async createNew(event: EventAggregate): Promise<number> {
         const result = await this.databaseService.event.create({
             data: {
                 name: event.props.name,
@@ -26,7 +26,7 @@ export default class EventRepository implements IEventRepository {
 return result.id;
     }
 
-    async updateById(event: EventEntity): Promise < void> {
+    async updateById(event: EventAggregate): Promise < void> {
     if(!event.id) {
     throw new RepositoryError('Event ID is required');
 }

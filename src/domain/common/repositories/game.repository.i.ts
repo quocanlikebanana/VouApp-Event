@@ -1,8 +1,10 @@
-import { EventEntity } from "src/domain/event/event.entity";
-import GameEntity from "src/domain/game/game.entity";
+import { EventAggregate } from "src/domain/event/event.agg";
+import GameAggregate from "src/domain/game/game.agg";
+import UserJoinGameEntity from "src/domain/user/user-join-game.entity";
 
 export default abstract class IGameRepository {
-    abstract getById(id: number): Promise<GameEntity>;
-    abstract addGames(game: GameEntity[]): Promise<void>;
-    abstract removeGamesOfEvent(event: EventEntity): Promise<void>;
+    abstract getById(id: number): Promise<GameAggregate>;
+    abstract getUserTop(userId: number, gameId: number): Promise<number>;
+    abstract addGames(game: GameAggregate[]): Promise<void>;
+    abstract removeGamesOfEvent(event: EventAggregate): Promise<void>;
 }

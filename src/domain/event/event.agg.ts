@@ -1,10 +1,10 @@
-import { Entity } from "src/domain/common/entity/entity.a";
 import { checkAllPropertiesNotNull, removeNullValues } from "../common/helpers";
 import { DomainError } from "../common/errors/domain.err";
 import { DomainEventDispatcher } from "src/domain/common/domain-event/domain-event-dispatcher";
 import { EventStatusTrigger } from "./events/event-status-trigger.event";
 import { EventStatus } from "src/domain/common/types/enums";
 import EventStatusContext from "./subs/event.state.dp";
+import AggregateRoot from "../common/entity/aggregate.a";
 
 export type EventProps = {
     name: string;
@@ -21,7 +21,7 @@ export type EventProps = {
 export type CreateEventProps = Omit<EventProps, "_eventStatusContext">;
 export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 
-export class EventEntity extends Entity<EventProps> {
+export class EventAggregate extends AggregateRoot<EventProps> {
     protected validate(props: EventProps): void {
         checkAllPropertiesNotNull(props);
         if (props.startDate >= props.endDate) {
@@ -42,12 +42,12 @@ export class EventEntity extends Entity<EventProps> {
         }
     }
 
-    static create(event: CreateEventProps): EventEntity {
+    static create(event: CreateEventProps): EventAggregate {
         const now = new Date();
         if (event.startDate <= now) {
             throw new DomainError("Start date must be in the future");
         }
-        const newEvent = new EventEntity({ ...event, _eventStatusContext: new EventStatusContext(EventStatus.PENDING) });
+        const newEvent = new EventAggregate({ ...event, _eventStatusContext: new EventStatusContext(EventStatus.PENDING) });
         return newEvent;
     }
 

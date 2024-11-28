@@ -1,5 +1,4 @@
 import { ValueObject } from "src/domain/common/entity/value-object.a";
-import PuzzleSetEntity from "../puzzle/puzzleset.entity";
 
 type UserExchangePuzzleSetProps = {
     exchangeDate: Date;

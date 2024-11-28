@@ -33,13 +33,13 @@ model Event {
     endDate     DateTime?
     status      EventStatus
 
-    UserJoinEvents      UserJoinEvent[]
+    UserJoinEvents      User_Join_Event[]
     PuzzleSet_Of_Events PuzzleSet_Of_Event[]
     Game_Of_Events      Game_Of_Event[]
     Promotion_Of_Events Promotion_Of_Event[]
 }
 
-model UserJoinEvent {
+model User_Join_Event {
     id            Int      @id @default(autoincrement())
     userId        Int
     userFirstName String
@@ -54,6 +54,7 @@ model UserJoinEvent {
     UserJoinEvent_Has_Puzzles                UserJoinEvent_Has_PuzzleOfEvent[]
     UserJoinEvent_Exchange_PuzzleSetOfEvents UserJoinEvent_Exchange_PuzzleSetOfEvent[]
     UserJoinEvent_Join_GameOfEvent           UserJoinEvent_Join_GameOfEvent[]
+    UserJoinEvent_Has_PromotionOfEvent       UserJoinEvent_Has_PromotionOfEvent[]
 
     @@unique([userId, eventId])
 }
@@ -63,12 +64,25 @@ model UserJoinEvent_Has_PuzzleOfEvent {
     quantity Int
 
     userJoinEventId Int
-    UserJoinEvent   UserJoinEvent @relation(fields: [userJoinEventId], references: [id])
+    UserJoinEvent   User_Join_Event @relation(fields: [userJoinEventId], references: [id])
 
     puzzleOfEventId Int
     Puzzle_Of_Event Puzzle_Of_Event @relation(fields: [puzzleOfEventId], references: [id])
 
     @@unique([userJoinEventId, puzzleOfEventId])
+}
+
+model UserJoinEvent_Has_PromotionOfEvent {
+    id       Int @id @default(autoincrement())
+    quantity Int
+
+    promotionOfEventId Int
+    PromotionOfEvent   Promotion_Of_Event @relation(fields: [promotionOfEventId], references: [id])
+
+    userJoinEventId Int
+    UserJoinEvent   User_Join_Event @relation(fields: [userJoinEventId], references: [id])
+
+    @@unique([promotionOfEventId, userJoinEventId])
 }
 
 model UserJoinEvent_Exchange_PuzzleSetOfEvent {
@@ -79,7 +93,7 @@ model UserJoinEvent_Exchange_PuzzleSetOfEvent {
     PuzzleSet_Of_Event   PuzzleSet_Of_Event? @relation(fields: [puzzleSet_Of_EventId], references: [id])
     puzzleSet_Of_EventId Int?
 
-    UserJoinEvent   UserJoinEvent? @relation(fields: [userJoinEventId], references: [id])
+    UserJoinEvent   User_Join_Event? @relation(fields: [userJoinEventId], references: [id])
     userJoinEventId Int?
 }
 
@@ -149,6 +163,7 @@ model Promotion_Of_Event {
     Event   Event @relation(fields: [eventId], references: [id])
 
     PromotionOfEvent_For_PuzzleSetOfEvents PromotionOfEvent_Prize_PuzzleSetOfEvent[]
+    UserJoinEvent_Has_PromotionOfEvent     UserJoinEvent_Has_PromotionOfEvent[]
 }
 
 enum Metric {
@@ -182,22 +197,25 @@ model Reward {
     rewardRuleForGameOfEventId Int
     Reward_RuleFor_GameOfEvent Reward_RuleFor_GameOfEvent? @relation(fields: [rewardRuleForGameOfEventId], references: [id])
 
-    UserJoinEventJoinGameOfEvent_History UserJoinEventJoinGameOfEvent_History[]
+    UserJoinEventJoinGameOfEventHistory_Has_ScoreReward UserJoinEventJoinGameOfEventHistory_Has_ScoreReward[]
+    UserJoinEventJoinGameOfEvent_Has_TopReward          UserJoinEventJoinGameOfEvent_Has_TopReward[]
 
     @@unique([promotionOrPuzzleId, type, quantity])
 }
 
 model UserJoinEvent_Join_GameOfEvent {
-    id   Int @id @default(autoincrement())
+    id   Int  @id @default(autoincrement())
     turn Int
+    top  Int?
 
     gameOfEventId Int
     Game_Of_Event Game_Of_Event @relation(fields: [gameOfEventId], references: [id])
 
     userJoinEventId Int
-    UserJoinEvent   UserJoinEvent? @relation(fields: [userJoinEventId], references: [id])
+    UserJoinEvent   User_Join_Event? @relation(fields: [userJoinEventId], references: [id])
 
-    UserJoinEventJoinGameOfEvent_History UserJoinEventJoinGameOfEvent_History[]
+    UserJoinEventJoinGameOfEvent_History       UserJoinEventJoinGameOfEvent_History[]
+    UserJoinEventJoinGameOfEvent_Has_TopReward UserJoinEventJoinGameOfEvent_Has_TopReward[]
 
     @@unique([gameOfEventId, userJoinEventId])
 }
@@ -207,11 +225,34 @@ model UserJoinEventJoinGameOfEvent_History {
     score Int
     date  DateTime
 
-    rewardId Int?
-    Reward   Reward? @relation(fields: [rewardId], references: [id])
-
     userJoinEventJoinGameOfEventId Int
     UserJoinEvent_Join_GameOfEvent UserJoinEvent_Join_GameOfEvent @relation(fields: [userJoinEventJoinGameOfEventId], references: [id])
 
+    UserJoinEventJoinGameOfEventHistory_Has_ScoreReward UserJoinEventJoinGameOfEventHistory_Has_ScoreReward[]
+
     @@unique([date, userJoinEventJoinGameOfEventId])
+}
+
+model UserJoinEventJoinGameOfEvent_Has_TopReward {
+    id Int @id @default(autoincrement())
+
+    userJoinEventJoinGameOfEventId Int
+    UserJoinEventJoinGameOfEvent   UserJoinEvent_Join_GameOfEvent @relation(fields: [userJoinEventJoinGameOfEventId], references: [id])
+
+    rewardId Int
+    Reward   Reward @relation(fields: [rewardId], references: [id])
+
+    @@unique([userJoinEventJoinGameOfEventId, rewardId])
+}
+
+model UserJoinEventJoinGameOfEventHistory_Has_ScoreReward {
+    id Int @id @default(autoincrement())
+
+    userJoinEventJoinGameOfEventHistoryId Int
+    UserJoinEventJoinGameOfEventHistory   UserJoinEventJoinGameOfEvent_History @relation(fields: [userJoinEventJoinGameOfEventHistoryId], references: [id])
+
+    rewardId Int
+    Reward   Reward @relation(fields: [rewardId], references: [id])
+
+    @@unique([userJoinEventJoinGameOfEventHistoryId, rewardId])
 }

@@ -1,7 +1,7 @@
 import { ICommand } from "src/commands/common/abstract/command.handler.i";
-import { EventEntity } from "src/domain/event/event.entity";
-import GameEntity from "src/domain/game/game.entity";
-import PuzzleSetEntity from "src/domain/puzzle/puzzleset.entity";
+import { EventAggregate } from "src/domain/event/event.agg";
+import GameAggregate from "src/domain/game/game.agg";
+import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 import { Game, Promotion, PuzzleSet } from "../common/types/event.type";
 import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "../common/converter/event-content.conv";
 import IEventRepository from "src/domain/common/repositories/event.repository.i";
@@ -32,7 +32,7 @@ export default class CreateEventCommand implements ICommand<CreateEventParam, vo
 	) { }
 
 	async execute(param: CreateEventParam): Promise<void> {
-		const entity = EventEntity.create({
+		const entity = EventAggregate.create({
 			name: param.name,
 			description: param.description,
 			startDate: param.startDate,
@@ -43,9 +43,9 @@ export default class CreateEventCommand implements ICommand<CreateEventParam, vo
 			}
 		});
 		await this.eventRepository.createNew(entity);
-		const gameEntities: GameEntity[] = Games_GameEntities(param.games);
+		const gameEntities: GameAggregate[] = Games_GameEntities(param.games);
 		await this.gameRepository.addGames(gameEntities);
-		const puzzleSetEntities: PuzzleSetEntity[] = PuzzleSets_PuzzleSetEntities(param.puzzleSets);
+		const puzzleSetEntities: PuzzleSetAggregate[] = PuzzleSets_PuzzleSetEntities(param.puzzleSets);
 		await this.puzzleSetRepository.addPuzzleSets(puzzleSetEntities);
 		const promotionEntities = Promotions_PromotionEntities(param.promotions);
 		await this.promotionRepository.addPromotions(promotionEntities);

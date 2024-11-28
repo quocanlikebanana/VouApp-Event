@@ -1,10 +1,10 @@
-import { EventEntity } from "src/domain/event/event.entity";
-import PuzzleValueObject from "src/domain/puzzle/puzzle.vo";
-import PuzzleSetEntity from "src/domain/puzzle/puzzleset.entity";
+import { EventAggregate } from "src/domain/event/event.agg";
+import PuzzleEntity from "src/domain/puzzle/puzzle.entity";
+import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 
 export default abstract class IPuzzleSetRepository {
-    abstract getById(id: number): Promise<PuzzleSetEntity>;
-    abstract getPuzzleById(id: number): Promise<PuzzleValueObject>;
-    abstract addPuzzleSets(puzzleSet: PuzzleSetEntity[]): Promise<void>;
-    abstract removePuzzleSetsOfEvent(event: EventEntity): Promise<void>;
+    abstract getById(puzzleSetId: number): Promise<PuzzleSetAggregate>;
+    abstract getPuzzleById(puzzleId: number): Promise<PuzzleEntity>;
+    abstract addPuzzleSets(puzzleSet: PuzzleSetAggregate[]): Promise<void>;
+    abstract removePuzzleSetsOfEvent(event: EventAggregate): Promise<void>;
 }

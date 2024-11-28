@@ -1,4 +1,4 @@
-import UserEntity from "src/domain/user/user.entity";
+import UserAggregate from "src/domain/user/user.agg";
 import { ICommand } from "../common/abstract/command.handler.i";
 import IUserRepository from "src/domain/common/repositories/user.repository.i";
 
@@ -18,7 +18,7 @@ export default class UserJoinEventCommand implements ICommand<UserJoinEventParam
     ) { }
 
     async execute(param: UserJoinEventParam): Promise<void> {
-        const entity = new UserEntity({
+        const entity = new UserAggregate({
             ex_user: {
                 id: param.userId,
                 firstName: param.userFirstName,
@@ -28,6 +28,7 @@ export default class UserJoinEventCommand implements ICommand<UserJoinEventParam
             },
             eventId: param.eventId,
             joinDate: param.joinDate,
+            userHasPromotion: [],
             userHasPuzzle: [],
             userExchangePuzzleSet: [],
             userJoinGame: []

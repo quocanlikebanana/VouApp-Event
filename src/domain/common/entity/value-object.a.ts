@@ -30,7 +30,7 @@ export abstract class ValueObject<T extends ValueObjectProps> {
         return new (this.constructor as { new(props: T) })(deepCopyProps);
     }
 
-    public update(updatedProps: Partial<T>): this {
+    public recreate(updatedProps: Partial<T>): this {
         const notNullEvent = removeNullValues(updatedProps);
         const newProps = { ...this.props, ...notNullEvent };
         return new (this.constructor as { new(props: T) })(newProps);

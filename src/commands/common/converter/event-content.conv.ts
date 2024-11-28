@@ -1,15 +1,15 @@
-import GameEntity from "src/domain/game/game.entity";
+import GameAggregate from "src/domain/game/game.agg";
 import { Game, Promotion, PuzzleSet } from "../types/event.type";
 import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
 import RewardValueObject from "src/domain/game/reward.vo";
-import PuzzleSetEntity from "src/domain/puzzle/puzzleset.entity";
-import PuzzleValueObject from "src/domain/puzzle/puzzle.vo";
+import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
+import PuzzleEntity from "src/domain/puzzle/puzzle.vo";
 import PuzzleSetPrizeValueObject from "src/domain/puzzle/puzzle-set-prize.vo";
-import PromotionEntity from "src/domain/promotion/promotion.entity";
+import PromotionAggregate from "src/domain/promotion/promotion.agg";
 
-export function Games_GameEntities(games: Game[]): GameEntity[] {
+export function Games_GameEntities(games: Game[]): GameAggregate[] {
     return games.map(game => {
-        return new GameEntity({
+        return new GameAggregate({
             ex_game: {
                 id: game.gameId,
                 name: game.gamName,
@@ -32,13 +32,13 @@ export function Games_GameEntities(games: Game[]): GameEntity[] {
     });
 }
 
-export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSetEntity[] {
-    return puzzleSets.map(puzzleSet => new PuzzleSetEntity({
+export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSetAggregate[] {
+    return puzzleSets.map(puzzleSet => new PuzzleSetAggregate({
         ex_puzzleSet: {
             id: puzzleSet.puzzleSetId,
             name: puzzleSet.puzzleSetName
         },
-        puzzles: puzzleSet.puzzles.map(puzzle => new PuzzleValueObject({
+        puzzles: puzzleSet.puzzles.map(puzzle => new PuzzleEntity({
             ex_id: puzzle.puzzleId,
             ex_name: puzzle.puzzleName,
         })),
@@ -49,13 +49,13 @@ export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSet
     }));
 }
 
-export function Promotions_PromotionEntities(promotions: Promotion[]): PromotionEntity[] {
-    return promotions.map(promotion => new PromotionEntity({
+export function Promotions_PromotionEntities(promotions: Promotion[]): PromotionAggregate[] {
+    return promotions.map(promotion => new PromotionAggregate({
         ex_promotion: {
             id: promotion.promotionId,
             name: promotion.promotionName,
             description: promotion.promotionDescription
         },
-        quantity: promotion.quantity
+        quantityUseInEvent: promotion.quantity
     }));
 }
