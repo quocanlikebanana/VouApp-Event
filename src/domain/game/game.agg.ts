@@ -39,11 +39,16 @@ export default class GameAggregate extends AggregateRoot<GameProps> {
         return rewards;
     }
 
-    public checkTopReward(top: number): RewardValueObject[] | null {
+    checkTopReward(top: number): RewardValueObject[] | null {
         return this.checkReward(Metric.TOP, top);
     }
 
-    public checkScoreReward(score: number): RewardValueObject[] | null {
+    checkScoreReward(score: number): RewardValueObject[] | null {
         return this.checkReward(Metric.SCORE, score);
+    }
+
+    updateExternal(gameName: string, gameDescription: string) {
+        this.props.ex_game.name = gameName;
+        this.props.ex_game.description = gameDescription;
     }
 }

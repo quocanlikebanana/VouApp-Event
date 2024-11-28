@@ -13,6 +13,7 @@ import { DomainEventDispatcher } from "../common/domain-event/domain-event-dispa
 import AddUserPromotionEvent from "./events/add-user-promotion.event";
 import { RewardValueType } from "../common/types/enums";
 import AddUserPuzzleEvent from "./events/add-user-puzzle.event";
+import RewardValueObject from "../game/reward.vo";
 
 export type UserProps = {
     ex_user: {
@@ -155,23 +156,6 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
         return userJoinGame;
     }
 
-    evaluateGame(game: GameAggregate, top: number): UserJoinGameEntity {
-        const userJoinGame = this.getGame(game);
-        if (!userJoinGame) {
-            throw new DomainError("User does not join the game");
-        }
-        const rewards = userJoinGame.evaluateRank(game, top);
-        for (const reward of rewards) {
-            if (reward.props.type === RewardValueType.PROMOTION) {
-                this.immidiateDispatch(new AddUserPromotionEvent(this, reward.props.rewardId, reward.props.quantity));
-            }
-            else if (reward.props.type === RewardValueType.PUZZLE) {
-                this.immidiateDispatch(new AddUserPuzzleEvent(this, reward.props.rewardId, reward.props.quantity));
-            }
-        }
-        return userJoinGame;
-    }
-
     takeTurn(game: GameAggregate, turn: number): UserJoinGameEntity {
         const userJoinGame = this.getGame(game);
         userJoinGame.addTurn(turn);
@@ -193,16 +177,45 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
         return userJoinGame;
     }
 
-    saveGameScore(game: GameAggregate, score: number): UserJoinGameHistoryValueObject {
+    private dispatchRewards(rewards: RewardValueObject[]): void {
+        for (const reward of rewards) {
+            if (reward.props.type === RewardValueType.PROMOTION) {
+                this.immidiateDispatch(new AddUserPromotionEvent(this, reward.props.rewardId, reward.props.quantity));
+            }
+            else if (reward.props.type === RewardValueType.PUZZLE) {
+                this.immidiateDispatch(new AddUserPuzzleEvent(this, reward.props.rewardId, reward.props.quantity));
+            }
+        }
+    }
+
+    saveScoreForGame(game: GameAggregate, score: number): UserJoinGameEntity {
         const userJoinGame = this.getGame(game);
-        const scoreReward = game.checkScoreReward(score);
-        const now = new Date();
-        const history = new UserJoinGameHistoryValueObject({
-            date: now,
-            score: score,
-            rewards: scoreReward,
-        });
-        userJoinGame.addHistory(history);
-        return history;
+        if (!userJoinGame) {
+            throw new DomainError("User does not join the game");
+        }
+        const rewards = userJoinGame.evaluateScore(game, score);
+        if (rewards) {
+            this.dispatchRewards(rewards);
+        }
+        return userJoinGame;
+    }
+
+    saveTopForGame(game: GameAggregate, top: number): UserJoinGameEntity {
+        const userJoinGame = this.getGame(game);
+        if (!userJoinGame) {
+            throw new DomainError("User does not join the game");
+        }
+        const rewards = userJoinGame.evaluateRank(game, top);
+        if (rewards) {
+            this.dispatchRewards(rewards);
+        }
+        return userJoinGame;
+    }
+
+    updateExternal(firstName: string, lastName: string, email: string, facebook: string) {
+        this.props.ex_user.firstName = firstName;
+        this.props.ex_user.lastName = lastName;
+        this.props.ex_user.email = email;
+        this.props.ex_user.facebook = facebook;
     }
 }

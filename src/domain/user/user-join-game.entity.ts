@@ -24,10 +24,6 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         return this.props._rank != null;
     }
 
-    addHistory(history: UserJoinGameHistoryValueObject): void {
-        this.props.histories.push(history);
-    }
-
     addTurn(turn: number): void {
         this.props.turn += turn;
     }
@@ -37,6 +33,18 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
             throw new Error("User does not have enough turns");
         }
         this.props.turn -= turn;
+    }
+
+    evaluateScore(game: GameAggregate, score: number): RewardValueObject[] | null {
+        const rewards = game.checkScoreReward(score);
+        const now = new Date();
+        const history = new UserJoinGameHistoryValueObject({
+            date: now,
+            score: score,
+            rewards: rewards,
+        });
+        this.props.histories.push(history);
+        return rewards;
     }
 
     evaluateRank(game: GameAggregate, top: number): RewardValueObject[] | null {

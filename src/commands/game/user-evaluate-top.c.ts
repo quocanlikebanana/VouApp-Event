@@ -23,7 +23,7 @@ export default class UserEvaluateTopCommand implements ICommand<UserEvaluateTopP
             throw new Error("Game not found");
         }
         const userTop = await this.gameRepo.getUserTop(user.id, game.id);
-        const userJoinGame = user.evaluateGame(game, userTop);
+        const userJoinGame = user.saveTopForGame(game, userTop);
         await this.userRepo.updateJoinGame(user, userJoinGame);
     }
 }

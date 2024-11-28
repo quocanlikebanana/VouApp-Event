@@ -31,4 +31,8 @@ export default class PuzzleSetAggregate extends AggregateRoot<PuzzleSetProps> {
     getpuzzleSetPrize(): PuzzleSetPrizeValueObject[] {
         return this.props.puzzleSetPrize;
     }
+
+    updateExternal(puzzleSetName: string) {
+        this.props.ex_puzzleSet.name = puzzleSetName;
+    }
 }

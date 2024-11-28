@@ -23,7 +23,7 @@ export default class UpdateEventCommand implements ICommand<Partial<UpdateEventP
             throw new DomainError('Event not found');
         }
         entity.update(param);
-        await this.eventRepository.update(entity);
+        await this.eventRepository.updateContent(entity);
         if (param.games) {
             await this.gameRepository.removeGamesOfEvent(entity);
             const gameEntities = Games_GameEntities(param.games);
