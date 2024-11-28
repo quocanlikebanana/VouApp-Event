@@ -24,6 +24,6 @@ export default class UserEvaluateScoreCommand implements ICommand<UserEvaluateSc
             throw new Error("Game not found");
         }
         const history = user.saveGameScore(game, param.score);
-        await this.userRepo.addGameHistory(user, history);
+        await this.userRepo.addJoinGameHistory(user, history);
     }
 }

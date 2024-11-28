@@ -26,8 +26,8 @@ export class UserExchangePuzzleSetCommand implements ICommand<UserExchangePuzzle
             throw new DomainError('Puzzle set not found');
         }
         const exchange = user.exchange(puzzleSet);
-        await this.userRepository.updatePuzzleSet(user);
-        await this.userRepository.addPuzzleSetExchange(user, exchange);
+        await this.userRepository.updateHasPuzzle(user);
+        await this.userRepository.addExchangePuzzleSet(user, exchange);
         await this.userRepository.updatePromotion(user);
     }
 }

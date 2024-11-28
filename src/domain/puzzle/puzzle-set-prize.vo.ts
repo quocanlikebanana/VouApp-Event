@@ -1,10 +1,9 @@
 import { ValueObject } from "src/domain/common/entity/value-object.a";
 import { DomainError } from "src/domain/common/errors/domain.err";
-import PromotionAggregate from "../promotion/promotion.agg";
 
 export type PuzzleSetPrizeProps = {
     quantity: number;
-    promotion: PromotionAggregate;
+    promotionOfEventId: number;
 };
 
 export default class PuzzleSetPrizeValueObject extends ValueObject<PuzzleSetPrizeProps> {

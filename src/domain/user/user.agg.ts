@@ -1,4 +1,4 @@
-import UserHasPuzzleValueObject from "./user-has-puzzle.vo";
+import UserHasPuzzleEntity from "./user-has-puzzle.entity";
 import UserExchangePuzzleSetValueObject from "./user-exchange-puzzleset.vo";
 import UserJoinGameEntity from "./user-join-game.entity";
 import { DomainError } from "src/domain/common/errors/domain.err";
@@ -9,6 +9,10 @@ import UserHasPromotionValueObject from "./user-has-promotion.vo";
 import PuzzleEntity from "../puzzle/puzzle.entity";
 import PromotionAggregate from "../promotion/promotion.agg";
 import AggregateRoot from "../common/entity/aggregate.a";
+import { DomainEventDispatcher } from "../common/domain-event/domain-event-dispatcher";
+import AddUserPromotionEvent from "./events/add-user-promotion.event";
+import { RewardValueType } from "../common/types/enums";
+import AddUserPuzzleEvent from "./events/add-user-puzzle.event";
 
 export type UserProps = {
     ex_user: {
@@ -20,7 +24,7 @@ export type UserProps = {
     }
     eventId: number;
     joinDate: Date;
-    userHasPuzzle: UserHasPuzzleValueObject[];
+    userHasPuzzle: UserHasPuzzleEntity[];
     userHasPromotion: UserHasPromotionValueObject[];
     userExchangePuzzleSet: UserExchangePuzzleSetValueObject[];
     userJoinGame: UserJoinGameEntity[];
@@ -93,15 +97,12 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
     }
 
     addPuzzle(puzzle: PuzzleEntity, quantity: number): void {
-        const puzzleItemIndex = this.props.userHasPuzzle.findIndex(item => item.props.puzzleOfEventId === puzzle.id);
-        const puzzleItem = this.props.userHasPuzzle[puzzleItemIndex];
-        if (puzzleItemIndex !== -1) {
-            this.props.userHasPuzzle[puzzleItemIndex] = puzzleItem.recreate({
-                quantity: puzzleItem.props.quantity + quantity
-            });
+        const puzzleItem = this.props.userHasPuzzle.find(item => item.props.puzzleOfEventId === puzzle.id);
+        if (puzzleItem) {
+            puzzleItem.addQuantity(quantity);
         }
         else {
-            this.props.userHasPuzzle.push(new UserHasPuzzleValueObject({
+            this.props.userHasPuzzle.push(new UserHasPuzzleEntity({
                 puzzleOfEventId: puzzle.id,
                 quantity,
             }));
@@ -109,17 +110,11 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
     }
 
     removePuzzle(puzzle: PuzzleEntity, quantity: number): void {
-        const puzzleItemIndex = this.props.userHasPuzzle.findIndex(item => item.props.puzzleOfEventId === puzzle.id);
-        if (puzzleItemIndex === -1) {
+        const puzzleItem = this.props.userHasPuzzle.find(item => item.props.puzzleOfEventId === puzzle.id);
+        if (!puzzleItem) {
             throw new DomainError("User does not have the puzzle");
         }
-        const puzzleItem = this.props.userHasPuzzle[puzzleItemIndex];
-        if (puzzleItem.props.quantity < quantity) {
-            throw new DomainError("User does not have enough puzzles");
-        }
-        this.props.userHasPuzzle[puzzleItemIndex] = puzzleItem.recreate({
-            quantity: puzzleItem.props.quantity - quantity
-        });
+        puzzleItem.subtractQuantity(quantity);
         if (puzzleItem.props.quantity === 0) {
             this.props.userHasPuzzle = this.props.userHasPuzzle.filter(item => item.props.puzzleOfEventId !== puzzle.id);
         }
@@ -134,11 +129,10 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
             puzzleSetOfEventId: puzzleSet.id
         });
         this.props.userExchangePuzzleSet.push(puzzleSetExchangeOfUser);
-        // const puzzleReward = puzzleSet.getpuzzleSetPrize();
-        // for (const reward of puzzleReward) {
-        //     this.addPromotion(reward.props.promotion, reward.props.quantity);
-        // }
-        // DomainEventDispatcher.dispatch({});
+        const puzzlePrize = puzzleSet.getpuzzleSetPrize();
+        for (const puzzlePrizeItem of puzzlePrize) {
+            this.immidiateDispatch(new AddUserPromotionEvent(this, puzzlePrizeItem.props.promotionOfEventId, puzzlePrizeItem.props.quantity));
+        }
         return puzzleSetExchangeOfUser;
     }
 
@@ -166,8 +160,15 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
         if (!userJoinGame) {
             throw new DomainError("User does not join the game");
         }
-        userJoinGame.evaluateRank(game, top);
-        // DomainEventDispatcher.dispatch({}); // Add promotion
+        const rewards = userJoinGame.evaluateRank(game, top);
+        for (const reward of rewards) {
+            if (reward.props.type === RewardValueType.PROMOTION) {
+                this.immidiateDispatch(new AddUserPromotionEvent(this, reward.props.rewardId, reward.props.quantity));
+            }
+            else if (reward.props.type === RewardValueType.PUZZLE) {
+                this.immidiateDispatch(new AddUserPuzzleEvent(this, reward.props.rewardId, reward.props.quantity));
+            }
+        }
         return userJoinGame;
     }
 

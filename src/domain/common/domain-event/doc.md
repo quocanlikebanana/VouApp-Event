@@ -8,3 +8,8 @@ There are 2 ways (real immediate and deferred) to handle domain events:
    2. https://lostechies.com/jimmybogard/2010/04/08/strengthening-your-domain-domain-events/
 2. **Deferred**: Add the domain events to a collection and then dispatch those domain events right before or right after committing the transaction (as with SaveChanges in EF).
    1. https://lostechies.com/jimmybogard/2014/05/13/a-better-domain-events-pattern/
+
+
+Ref:
+* https://enterprisecraftsmanship.com/posts/domain-events-simple-reliable-solution/
+* https://enterprisecraftsmanship.com/posts/merging-domain-events-dispatching/

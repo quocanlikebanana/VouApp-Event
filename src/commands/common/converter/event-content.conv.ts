@@ -3,9 +3,9 @@ import { Game, Promotion, PuzzleSet } from "../types/event.type";
 import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
 import RewardValueObject from "src/domain/game/reward.vo";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
-import PuzzleEntity from "src/domain/puzzle/puzzle.vo";
 import PuzzleSetPrizeValueObject from "src/domain/puzzle/puzzle-set-prize.vo";
 import PromotionAggregate from "src/domain/promotion/promotion.agg";
+import PuzzleEntity from "src/domain/puzzle/puzzle.entity";
 
 export function Games_GameEntities(games: Game[]): GameAggregate[] {
     return games.map(game => {
@@ -39,12 +39,15 @@ export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSet
             name: puzzleSet.puzzleSetName
         },
         puzzles: puzzleSet.puzzles.map(puzzle => new PuzzleEntity({
-            ex_id: puzzle.puzzleId,
-            ex_name: puzzle.puzzleName,
+            ex: {
+                id: puzzle.puzzleId,
+                name: puzzle.puzzleName,
+            },
+            puzzleSetId: puzzleSet.puzzleSetId
         })),
         puzzleSetPrize: puzzleSet.prizes.map(prize => new PuzzleSetPrizeValueObject({
             quantity: prize.quantity,
-            promotionId: prize.promotionId
+            promotionOfEventId: prize.promotionId
         }))
     }));
 }

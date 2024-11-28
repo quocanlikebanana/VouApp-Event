@@ -1,7 +1,7 @@
 import { checkAllPropertiesNotNull, removeNullValues } from "../common/helpers";
 import { DomainError } from "../common/errors/domain.err";
 import { DomainEventDispatcher } from "src/domain/common/domain-event/domain-event-dispatcher";
-import { EventStatusTrigger } from "./events/event-status-trigger.event";
+import { EventStatusUpdateEvent } from "./events/event-status-update.event";
 import { EventStatus } from "src/domain/common/types/enums";
 import EventStatusContext from "./subs/event.state.dp";
 import AggregateRoot from "../common/entity/aggregate.a";
@@ -36,7 +36,7 @@ export class EventAggregate extends AggregateRoot<EventProps> {
             else if (props.endDate <= now) {
                 this.props._eventStatusContext.end();
             }
-            DomainEventDispatcher.dispatch(new EventStatusTrigger(this.id, props._eventStatusContext.getState()));
+            DomainEventDispatcher.dispatch(new EventStatusUpdateEvent(this));
         } catch (error) {
             throw (error);
         }

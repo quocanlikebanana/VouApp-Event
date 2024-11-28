@@ -24,6 +24,6 @@ export default class UserJoinGameCommand implements ICommand<UserJoinGameParam, 
             throw new DomainError('Game not found');
         }
         const userJoinGame = user.joinGame(game);
-        await this.userRepository.addGame(user, userJoinGame);
+        await this.userRepository.addJoinGame(user, userJoinGame);
     }
 }

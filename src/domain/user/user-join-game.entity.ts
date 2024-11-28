@@ -39,11 +39,12 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         this.props.turn -= turn;
     }
 
-    evaluateRank(game: GameAggregate, top: number): void {
+    evaluateRank(game: GameAggregate, top: number): RewardValueObject[] | null {
         const rewards = game.checkTopReward(top);
         this.props._rank = {
             top,
             rewards,
         };
+        return rewards;
     }
 }

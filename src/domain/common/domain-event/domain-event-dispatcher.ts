@@ -1,8 +1,12 @@
-import { EventStatusTrigger } from "src/domain/event/events/event-status-trigger.event";
-import { EventStatusTriggerEventHandler } from "src/domain/event/handlers/event-status-trigger.eh";
+import { EventStatusUpdateEvent } from "src/domain/event/events/event-status-update.event";
+import { EventStatusUpdateEventHandler } from "src/domain/event/handlers/event-status-update.eh";
 import { DomainEventHandler } from "./domain-event-handler.i";
 import { DomainEventBase } from "./domain-event.base";
 import { Injectable } from "@nestjs/common";
+import AddUserPromotionEvent from "src/domain/user/events/add-user-promotion.event";
+import AddUserPromotionEventHandler from "src/domain/user/handlers/add-user-promotion.eh";
+import AddUserPuzzleEventHandler from "src/domain/user/handlers/add-user-puzzle.eh";
+import AddUserPuzzleEvent from "src/domain/user/events/add-user-puzzle.event";
 
 // 4 methods:
 // + Module ref: https://stackoverflow.com/questions/64312229/how-to-manually-inject-dependency-in-nestjs?rq=3
@@ -17,9 +21,13 @@ export class DomainEventDispatcher {
     } = {};
 
     constructor(
-        private readonly pendingOutdatedEventHandler: EventStatusTriggerEventHandler
+        private readonly pendingOutdatedEventHandler: EventStatusUpdateEventHandler,
+        private readonly addUserPromotionEventHandler: AddUserPromotionEventHandler,
+        private readonly addUserPuzzleEventHandler: AddUserPuzzleEventHandler,
     ) {
-        DomainEventDispatcher.register(EventStatusTrigger, this.pendingOutdatedEventHandler);
+        DomainEventDispatcher.register(EventStatusUpdateEvent, this.pendingOutdatedEventHandler);
+        DomainEventDispatcher.register(AddUserPromotionEvent, this.addUserPromotionEventHandler);
+        DomainEventDispatcher.register(AddUserPuzzleEvent, this.addUserPuzzleEventHandler);
     }
 
     private static register<T extends DomainEventBase>(eventClass: new (...args: any[]) => T, handler: DomainEventHandler<T>): void {

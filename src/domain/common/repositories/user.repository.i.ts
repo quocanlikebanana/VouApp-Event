@@ -10,14 +10,13 @@ export default abstract class IUserRepository {
     abstract remove(user: UserAggregate): Promise<void>;
 
     // Puzzle
-    abstract updatePuzzleSet(user: UserAggregate): Promise<void>;
-    abstract addPuzzleSetExchange(user: UserAggregate, puzzleSetExchangeOfUser: UserExchangePuzzleSetValueObject): Promise<void>;
+    abstract updateHasPuzzle(user: UserAggregate): Promise<void>;
+    abstract addExchangePuzzleSet(user: UserAggregate, puzzleSetExchangeOfUser: UserExchangePuzzleSetValueObject): Promise<void>;
 
     // Game
-    abstract addGame(user: UserAggregate, userJoinGame: UserJoinGameEntity): Promise<void>;
-    abstract updateGameTurn(user: UserAggregate, userJoinGame: UserJoinGameEntity): Promise<void>;
-    abstract updateGame(user: UserAggregate, userJoinGame: UserJoinGameEntity): Promise<void>;
-    abstract addGameHistory(user: UserAggregate, UserJoinGameHistory: UserJoinGameHistoryValueObject): Promise<void>;
+    abstract addJoinGame(user: UserAggregate, userJoinGame: UserJoinGameEntity): Promise<void>;
+    abstract updateJoinGame(user: UserAggregate, userJoinGame: UserJoinGameEntity): Promise<void>;
+    abstract addJoinGameHistory(user: UserAggregate, UserJoinGameHistory: UserJoinGameHistoryValueObject): Promise<void>;
 
     // Promotion
     abstract updatePromotion(user: UserAggregate): Promise<void>;

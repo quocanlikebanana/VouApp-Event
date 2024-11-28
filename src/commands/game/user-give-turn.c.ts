@@ -31,7 +31,7 @@ export default class UserGiveTurnCommand implements ICommand<UserGiveTurnParam, 
         }
         const givenTurnGame = userGive.giveTurn(game, param.turn);
         const takenTurnGame = userTake.takeTurn(game, param.turn);
-        await this.userRepository.updateGameTurn(userGive, givenTurnGame);
-        await this.userRepository.updateGameTurn(userTake, takenTurnGame);
+        await this.userRepository.updateJoinGame(userGive, givenTurnGame);
+        await this.userRepository.updateJoinGame(userTake, takenTurnGame);
     }
 }

@@ -24,6 +24,6 @@ export default class UserEvaluateTopCommand implements ICommand<UserEvaluateTopP
         }
         const userTop = await this.gameRepo.getUserTop(user.id, game.id);
         const userJoinGame = user.evaluateGame(game, userTop);
-        await this.userRepo.updateGame(user, userJoinGame);
+        await this.userRepo.updateJoinGame(user, userJoinGame);
     }
 }

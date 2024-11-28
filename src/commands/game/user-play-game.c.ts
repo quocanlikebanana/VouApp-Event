@@ -23,6 +23,6 @@ export default class UserPlayGameCommand implements ICommand<UserPlayGameParam, 
             throw new Error("Game not found");
         }
         const userJoinGame = user.playGame(game);
-        await this.userRepo.updateGameTurn(user, userJoinGame);
+        await this.userRepo.updateJoinGame(user, userJoinGame);
     }
 }
