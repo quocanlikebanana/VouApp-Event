@@ -1,13 +1,15 @@
 import { ICommand } from "../common/abstract/command.handler.i";
 import { ExternalPromotion } from "src/domain/common/types/external.type";
-import IPromotionRepository from "src/domain/common/repositories/promotion.repository.i";
+import IUnitOfWork from "../common/abstract/unit-of-work.i";
 
 export default class UpdatePromotionCommand implements ICommand<ExternalPromotion, void> {
     constructor(
-        private readonly promotionRepository: IPromotionRepository,
+        private readonly unitOfWork: IUnitOfWork
     ) { }
 
     async execute(param: ExternalPromotion): Promise<void> {
-        await this.promotionRepository.updateExternal(param);
+        await this.unitOfWork.execute(async (uow) => {
+            await uow.promotionRepository.updateExternal(param);
+        });
     }
 }

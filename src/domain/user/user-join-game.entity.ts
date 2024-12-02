@@ -39,7 +39,7 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         this.props.turn -= turn;
     }
 
-    evaluateScore(game: GameAggregate, score: number): RewardEntity[] | null {
+    evaluateScore(game: GameAggregate, score: number): UserJoinGameHistoryValueObject {
         const rewards = game.checkScoreReward(score);
         const now = new Date();
         const history = new UserJoinGameHistoryValueObject({
@@ -48,7 +48,7 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
             rewards: rewards,
         });
         this.props.histories.push(history);
-        return rewards;
+        return history;
     }
 
     evaluateRank(game: GameAggregate, top: number): RewardEntity[] | null {

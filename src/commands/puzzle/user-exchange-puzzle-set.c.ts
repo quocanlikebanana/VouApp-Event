@@ -1,33 +1,33 @@
-import IUserRepository from "src/domain/common/repositories/user.repository.i";
 import { ICommand } from "../common/abstract/command.handler.i";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
-import IPuzzleSetRepository from "src/domain/common/repositories/puzzle-set.repository.i";
 import UserAggregate from "src/domain/user/user.agg";
 import { DomainError } from "src/domain/common/errors/domain.err";
+import IUnitOfWork from "../common/abstract/unit-of-work.i";
 
 export type UserExchangePuzzleSetParam = {
-    userJoinEventId: number;
-    puzzleSetOfEventId: number;
+    userJoinEventId: string;
+    puzzleSetOfEventId: string;
 }
 
 export class UserExchangePuzzleSetCommand implements ICommand<UserExchangePuzzleSetParam, void> {
     constructor(
-        private readonly userRepository: IUserRepository,
-        private readonly puzzleSetRepository: IPuzzleSetRepository
+        private readonly unitOfWork: IUnitOfWork
     ) { }
 
     async execute(param: UserExchangePuzzleSetParam): Promise<void> {
-        const user: UserAggregate = await this.userRepository.getById(param.userJoinEventId);
-        if (!user) {
-            throw new DomainError('User not found');
-        }
-        const puzzleSet: PuzzleSetAggregate = await this.puzzleSetRepository.getById(param.puzzleSetOfEventId);
-        if (!puzzleSet) {
-            throw new DomainError('Puzzle set not found');
-        }
-        const exchange = user.exchange(puzzleSet);
-        await this.userRepository.updateHasPuzzle(user);
-        await this.userRepository.addExchangePuzzleSet(user, exchange);
-        await this.userRepository.updatePromotion(user);
+        await this.unitOfWork.execute(async (uow) => {
+            const user: UserAggregate = await uow.userRepository.getById(param.userJoinEventId);
+            if (!user) {
+                throw new DomainError('User not found');
+            }
+            const puzzleSet: PuzzleSetAggregate = await uow.puzzleSetRepository.getById(param.puzzleSetOfEventId);
+            if (!puzzleSet) {
+                throw new DomainError('Puzzle set not found');
+            }
+            const exchange = user.exchange(puzzleSet);
+            await uow.userRepository.updateHasPuzzle(user);
+            await uow.userRepository.addExchangePuzzleSet(user, exchange);
+            await uow.userRepository.updatePromotion(user);
+        });
     }
 }

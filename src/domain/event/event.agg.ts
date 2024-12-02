@@ -18,7 +18,7 @@ export type EventProps = {
     }
 };
 
-export type CreateEventProps = Omit<EventProps, "_eventStatusContext"> & { status: EventStatus };
+export type CreateEventProps = Omit<EventProps, "_eventStatusContext"> & { status?: EventStatus };
 export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 
 export class EventAggregate extends AggregateRoot<EventProps> {
@@ -50,7 +50,7 @@ export class EventAggregate extends AggregateRoot<EventProps> {
         const newEvent = new EventAggregate(
             {
                 ...event,
-                _eventStatusContext: new EventStatusContext(event.status)
+                _eventStatusContext: event.status ? new EventStatusContext(event.status) : new EventStatusContext(EventStatus.PENDING)
             }, id);
         return newEvent;
     }

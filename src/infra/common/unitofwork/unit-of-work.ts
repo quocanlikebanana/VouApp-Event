@@ -10,9 +10,10 @@ import UserRepository from 'src/infra/repositories/user.repository';
 import GameRepository from 'src/infra/repositories/game.repository';
 import PromotionRepository from 'src/infra/repositories/promotion.repository';
 import PuzzleSetRepository from 'src/infra/repositories/puzzle.repository';
+import IUnitOfWork from 'src/commands/common/abstract/unit-of-work.i';
 
 @Injectable()
-export class UnitOfWork implements OnModuleDestroy {
+export class UnitOfWork implements OnModuleDestroy, IUnitOfWork {
 	private readonly databaseService: PrismaDatabaseService;
 
 	public readonly eventRepository: IEventRepository;

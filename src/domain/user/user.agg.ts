@@ -12,6 +12,7 @@ import AddUserPromotionEvent from "./events/add-user-promotion.event";
 import { RewardValueType } from "../common/types/enums";
 import AddUserPuzzleEvent from "./events/add-user-puzzle.event";
 import RewardEntity from "../game/reward.entity";
+import UserJoinGameHistoryValueObject from "./user-join-game-history.vo";
 
 export type UserProps = {
     ex_user: {
@@ -190,16 +191,16 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
         }
     }
 
-    saveScoreForGame(game: GameAggregate, score: number): UserJoinGameEntity {
+    saveScoreForGame(game: GameAggregate, score: number): UserJoinGameHistoryValueObject {
         const userJoinGame = this.getGame(game);
         if (!userJoinGame) {
             throw new DomainError("User does not join the game");
         }
-        const rewards = userJoinGame.evaluateScore(game, score);
-        if (rewards) {
-            this.dispatchRewards(rewards);
+        const history = userJoinGame.evaluateScore(game, score);
+        if (history.props.rewards) {
+            this.dispatchRewards(history.props.rewards);
         }
-        return userJoinGame;
+        return history;
     }
 
     saveTopForGame(game: GameAggregate, top: number): UserJoinGameEntity {
