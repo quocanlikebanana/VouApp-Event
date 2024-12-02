@@ -3,7 +3,7 @@ import { Entity } from "../common/entity/entity.a";
 
 type UserHasPuzzleProps = {
     quantity: number;
-    puzzleOfEventId: number;
+    puzzleOfEventId: string;
 };
 
 export default class UserHasPuzzleEntity extends Entity<UserHasPuzzleProps> {

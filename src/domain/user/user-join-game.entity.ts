@@ -5,7 +5,7 @@ import GameAggregate from "../game/game.agg";
 
 export type UserJoinGameProps = {
     turn: number;
-    gameOfEventId: number;
+    gameOfEventId: string;
     histories: UserJoinGameHistoryValueObject[];
     _rank?: {
         top: number;

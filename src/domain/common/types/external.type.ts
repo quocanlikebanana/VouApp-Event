@@ -1,5 +1,5 @@
 export type ExternalUser = {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -7,29 +7,29 @@ export type ExternalUser = {
 }
 
 export type ExternalPartner = {
-    id: number;
+    id: string;
     name: string;
 }
 
 export type ExternalPromotion = {
-    id: number;
+    id: string;
     name: string;
     description: string;
 }
 
 export type ExternalGame = {
-    id: number;
+    id: string;
     name: string;
     description: string;
 }
 
 type ExternalPuzzle = {
-    id: number;
+    id: string;
     name: string;
 }
 
 export type ExternalPuzzleSet = {
-    id: number;
+    id: string;
     name: string;
     puzzles: ExternalPuzzle[];
 }

@@ -2,10 +2,10 @@ import { Entity } from "../common/entity/entity.a";
 
 export type PuzzleProps = {
     ex: {
-        id: number;
+        id: string;
         name: string;
     }
-    puzzleSetId: number;
+    puzzleSetId: string;
 }
 
 export default class PuzzleEntity extends Entity<PuzzleProps> {

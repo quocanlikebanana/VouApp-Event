@@ -1,10 +1,12 @@
+import { generateUuid } from "../helpers";
+
 export abstract class Entity<T> {
-	private readonly _id?: number;
+	private readonly _id: string;
 	private _props: T;
 
-	constructor(props: T, id: number = null) {
+	constructor(props: T, id: string = null) {
 		// Id must be assigned first
-		this._id = id;
+		this._id = id ?? generateUuid();
 		this.validate(props);
 		this._props = props;
 	}
@@ -18,7 +20,7 @@ export abstract class Entity<T> {
 		return entity._id === this._id;
 	}
 
-	public get id(): number {
+	public get id(): string {
 		return this._id;
 	}
 
@@ -29,9 +31,5 @@ export abstract class Entity<T> {
 	protected set props(newProps: T) {
 		this.validate(newProps);
 		this._props = newProps;
-	}
-
-	public isNewEntity(): boolean {
-		return this._id === null;
 	}
 }

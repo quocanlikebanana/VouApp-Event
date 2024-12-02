@@ -7,7 +7,7 @@ import AggregateRoot from "../common/entity/aggregate.a";
 
 export type GameProps = {
     ex_game: {
-        id: number;
+        id: string;
         name: string;
         description: string;
     }
@@ -19,6 +19,10 @@ export default class GameAggregate extends AggregateRoot<GameProps> {
         if (props.rewardRules.length === 0) {
             throw new DomainError("Game must have at least one reward rule");
         }
+    }
+
+    static create(props: GameProps, id?: string): GameAggregate {
+        return new GameAggregate(props, id);
     }
 
     private checkReward(metric: Metric, value: number): RewardValueObject[] | null {

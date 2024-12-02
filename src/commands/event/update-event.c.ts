@@ -27,17 +27,17 @@ export default class UpdateEventCommand implements ICommand<Partial<UpdateEventP
         if (param.games) {
             await this.gameRepository.removeGamesOfEvent(entity);
             const gameEntities = Games_GameEntities(param.games);
-            await this.gameRepository.addGames(gameEntities);
+            await this.gameRepository.addGamesOfEvent(gameEntities);
         }
         if (param.puzzleSets) {
             await this.puzzleSetRepository.removePuzzleSetsOfEvent(entity);
             const puzzleSetEntities = PuzzleSets_PuzzleSetEntities(param.puzzleSets);
-            await this.puzzleSetRepository.addPuzzleSets(puzzleSetEntities);
+            await this.puzzleSetRepository.addPuzzleSetsOfEvent(puzzleSetEntities);
         }
         if (param.promotions) {
             await this.promotionRepository.removePromotionsOfEvent(entity);
             const promotionEntities = Promotions_PromotionEntities(param.promotions);
-            await this.promotionRepository.addPromotions(promotionEntities);
+            await this.promotionRepository.addPromotionsOfEvent(promotionEntities);
         }
     }
 }

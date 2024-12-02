@@ -44,10 +44,10 @@ export default class CreateEventCommand implements ICommand<CreateEventParam, vo
 		});
 		await this.eventRepository.createNew(entity);
 		const gameEntities: GameAggregate[] = Games_GameEntities(param.games);
-		await this.gameRepository.addGames(gameEntities);
+		await this.gameRepository.addGamesOfEvent(gameEntities);
 		const puzzleSetEntities: PuzzleSetAggregate[] = PuzzleSets_PuzzleSetEntities(param.puzzleSets);
-		await this.puzzleSetRepository.addPuzzleSets(puzzleSetEntities);
+		await this.puzzleSetRepository.addPuzzleSetsOfEvent(puzzleSetEntities);
 		const promotionEntities = Promotions_PromotionEntities(param.promotions);
-		await this.promotionRepository.addPromotions(promotionEntities);
+		await this.promotionRepository.addPromotionsOfEvent(promotionEntities);
 	}
 }

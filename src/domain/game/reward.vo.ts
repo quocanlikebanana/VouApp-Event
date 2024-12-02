@@ -3,7 +3,7 @@ import { DomainError } from "src/domain/common/errors/domain.err";
 import { RewardValueType } from "src/domain/common/types/enums";
 
 export type RewardProps = {
-    rewardId: number;
+    rewardId: string;
     type: RewardValueType;
     quantity: number;
 };

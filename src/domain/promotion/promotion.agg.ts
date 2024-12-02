@@ -3,7 +3,7 @@ import AggregateRoot from "../common/entity/aggregate.a";
 
 export type PromotionProps = {
     ex_promotion: {
-        id: number;
+        id: string;
         name: string;
         description: string;
     }

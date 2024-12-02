@@ -6,7 +6,7 @@ import AggregateRoot from "../common/entity/aggregate.a";
 
 export type PuzzleSetProps = {
     ex_puzzleSet: {
-        id: number;
+        id: string;
         name: string
     }
     puzzles: PuzzleEntity[];

@@ -4,12 +4,10 @@ import UserJoinGameEntity from "./user-join-game.entity";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import PuzzleSetAggregate from "../puzzle/puzzleset.agg";
 import GameAggregate from "../game/game.agg";
-import UserJoinGameHistoryValueObject from "./user-join-game-history.vo";
 import UserHasPromotionValueObject from "./user-has-promotion.vo";
 import PuzzleEntity from "../puzzle/puzzle.entity";
 import PromotionAggregate from "../promotion/promotion.agg";
 import AggregateRoot from "../common/entity/aggregate.a";
-import { DomainEventDispatcher } from "../common/domain-event/domain-event-dispatcher";
 import AddUserPromotionEvent from "./events/add-user-promotion.event";
 import { RewardValueType } from "../common/types/enums";
 import AddUserPuzzleEvent from "./events/add-user-puzzle.event";
@@ -17,13 +15,13 @@ import RewardValueObject from "../game/reward.vo";
 
 export type UserProps = {
     ex_user: {
-        id: number;
+        id: string;
         firstName: string;
         lastName: string;
         email: string;
         facebook: string;
     }
-    eventId: number;
+    eventId: string;
     joinDate: Date;
     userHasPuzzle: UserHasPuzzleEntity[];
     userHasPromotion: UserHasPromotionValueObject[];
@@ -39,7 +37,7 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
             throw new DomainError("Join date must be in the past");
         }
         // Check if the user join the same game multiple times
-        const gamgeIdSet = new Set<number>();
+        const gamgeIdSet = new Set<string>();
         for (const item of props.userJoinGame) {
             if (gamgeIdSet.has(item.props.gameOfEventId)) {
                 throw new DomainError("User can only join a game once");
@@ -47,7 +45,7 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
             gamgeIdSet.add(item.props.gameOfEventId);
         }
         // Check if user has duplicate puzzles
-        const puzzleIdSet = new Set<number>();
+        const puzzleIdSet = new Set<string>();
         for (const item of props.userHasPuzzle) {
             if (puzzleIdSet.has(item.props.puzzleOfEventId)) {
                 throw new DomainError("User cannot have duplicate puzzles");
@@ -55,7 +53,7 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
             puzzleIdSet.add(item.props.puzzleOfEventId);
         }
         // Check if user has duplicate promotions
-        const promotionIdSet = new Set<number>();
+        const promotionIdSet = new Set<string>();
         for (const item of props.userHasPromotion) {
             if (promotionIdSet.has(item.props.promotionOfEventId)) {
                 throw new DomainError("User cannot have duplicate promotions");

@@ -6,7 +6,7 @@ import { ExternalUser } from "../types/external.type";
 
 // User that joins an event; not all users. 
 export default abstract class IUserRepository {
-    abstract getById(id: number): Promise<UserAggregate>;
+    abstract getById(id: string): Promise<UserAggregate>;
     abstract create(user: UserAggregate): Promise<void>;
     abstract remove(user: UserAggregate): Promise<void>;
     abstract updateExternal(exUser: ExternalUser): Promise<void>;

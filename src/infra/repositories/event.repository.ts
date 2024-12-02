@@ -7,13 +7,13 @@ import { EventAggregate } from "src/domain/event/event.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
 
 type EventDataModel = {
-    id?: number;
+    id?: string;
     name: string;
     description: string;
     startDate: Date;
     endDate: Date;
     status: $Enums.EventStatus;
-    partnerId: number;
+    partnerId: string;
     partnerName: string;
 }
 
@@ -33,7 +33,7 @@ function toEntity(event: EventDataModel): EventAggregate {
 
 function toDataModel(event: EventAggregate): EventDataModel {
     return {
-        id: event.isNewEntity() ? null : event.id,
+        id: event.id,
         name: event.props.name,
         description: event.props.description,
         startDate: event.props.startDate,
@@ -50,7 +50,7 @@ export default class EventRepository implements IEventRepository {
         private readonly databaseService: PrismaDatabaseService,
     ) { }
 
-    async getById(id: number): Promise<EventAggregate> {
+    async getById(id: string): Promise<EventAggregate> {
         const event = await this.databaseService.event.findUnique({
             where: {
                 id: id
@@ -59,7 +59,7 @@ export default class EventRepository implements IEventRepository {
         return toEntity(event);
     }
 
-    async createNew(event: EventAggregate): Promise<number> {
+    async createNew(event: EventAggregate): Promise<string> {
         const res = await this.databaseService.event.create({
             data: toDataModel(event)
         });
@@ -92,6 +92,6 @@ export default class EventRepository implements IEventRepository {
             data: {
                 partnerName: exPartner.name
             }
-        })
+        });
     }
 }

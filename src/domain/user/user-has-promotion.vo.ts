@@ -3,7 +3,7 @@ import { ValueObject } from "src/domain/common/entity/value-object.a";
 
 type UserHasPromotionProps = {
     quantity: number;
-    promotionOfEventId: number;
+    promotionOfEventId: string;
 };
 
 export default class UserHasPromotionValueObject extends ValueObject<UserHasPromotionProps> {

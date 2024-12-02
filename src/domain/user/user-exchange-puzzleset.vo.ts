@@ -2,7 +2,7 @@ import { ValueObject } from "src/domain/common/entity/value-object.a";
 
 type UserExchangePuzzleSetProps = {
     exchangeDate: Date;
-    puzzleSetOfEventId: number;
+    puzzleSetOfEventId: string;
 };
 
 export default class UserExchangePuzzleSetValueObject extends ValueObject<UserExchangePuzzleSetProps> {

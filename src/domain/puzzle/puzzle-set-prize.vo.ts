@@ -3,7 +3,7 @@ import { DomainError } from "src/domain/common/errors/domain.err";
 
 export type PuzzleSetPrizeProps = {
     quantity: number;
-    promotionOfEventId: number;
+    promotionOfEventId: string;
 };
 
 export default class PuzzleSetPrizeValueObject extends ValueObject<PuzzleSetPrizeProps> {

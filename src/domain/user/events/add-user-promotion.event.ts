@@ -4,7 +4,7 @@ import UserAggregate from "../user.agg";
 export default class AddUserPromotionEvent extends DomainEventBase {
     constructor(
         public readonly user: UserAggregate,
-        public readonly promotionOfEventId: number,
+        public readonly promotionOfEventId: string,
         public readonly quantity: number,
     ) {
         super();

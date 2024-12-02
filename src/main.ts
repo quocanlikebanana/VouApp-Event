@@ -1,6 +1,6 @@
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter } from './all-exceptions.filter';
+import { AllExceptionsFilter } from './config/all-exceptions.filter';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 let app: INestApplication = null;

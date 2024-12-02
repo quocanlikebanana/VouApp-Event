@@ -13,7 +13,7 @@ export type EventProps = {
     startDate: Date;
     endDate: Date;
     ex_partner: {
-        id: number;
+        id: string;
         name: string;
     }
 };
@@ -42,7 +42,7 @@ export class EventAggregate extends AggregateRoot<EventProps> {
         }
     }
 
-    static create(event: CreateEventProps, id?: number): EventAggregate {
+    static create(event: CreateEventProps, id?: string): EventAggregate {
         const now = new Date();
         if (event.startDate <= now) {
             throw new DomainError("Start date must be in the future");
