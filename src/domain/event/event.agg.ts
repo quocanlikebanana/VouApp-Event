@@ -18,7 +18,7 @@ export type EventProps = {
     }
 };
 
-export type CreateEventProps = Omit<EventProps, "_eventStatusContext">;
+export type CreateEventProps = Omit<EventProps, "_eventStatusContext"> & { status: EventStatus };
 export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 
 export class EventAggregate extends AggregateRoot<EventProps> {
@@ -42,12 +42,16 @@ export class EventAggregate extends AggregateRoot<EventProps> {
         }
     }
 
-    static create(event: CreateEventProps): EventAggregate {
+    static create(event: CreateEventProps, id?: number): EventAggregate {
         const now = new Date();
         if (event.startDate <= now) {
             throw new DomainError("Start date must be in the future");
         }
-        const newEvent = new EventAggregate({ ...event, _eventStatusContext: new EventStatusContext(EventStatus.PENDING) });
+        const newEvent = new EventAggregate(
+            {
+                ...event,
+                _eventStatusContext: new EventStatusContext(event.status)
+            }, id);
         return newEvent;
     }
 

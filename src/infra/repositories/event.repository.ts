@@ -1,9 +1,48 @@
-import IEventRepository from "src/domain/repositories/event.repository.i";
+import { $Enums } from "@prisma/client";
+import { Injectable } from "@nestjs/common";
+import IEventRepository from "src/domain/common/repositories/event.repository.i";
+import { EventStatus } from "src/domain/common/types/enums";
+import { ExternalPartner } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
-import RepositoryError from "../common/error/repository.err";
-import { Injectable } from "@nestjs/common";
-import { $Enums, EventStatus } from "@prisma/client";
+
+type EventDataModel = {
+    id?: number;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    status: $Enums.EventStatus;
+    partnerId: number;
+    partnerName: string;
+}
+
+function toEntity(event: EventDataModel): EventAggregate {
+    return EventAggregate.create({
+        name: event.name,
+        description: event.description,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        status: event.status as EventStatus,
+        ex_partner: {
+            id: event.partnerId,
+            name: event.partnerName,
+        }
+    }, event.id);
+}
+
+function toDataModel(event: EventAggregate): EventDataModel {
+    return {
+        id: event.isNewEntity() ? null : event.id,
+        name: event.props.name,
+        description: event.props.description,
+        startDate: event.props.startDate,
+        endDate: event.props.endDate,
+        status: event.props._eventStatusContext.getState() as $Enums.EventStatus,
+        partnerId: event.props.ex_partner.id,
+        partnerName: event.props.ex_partner.name,
+    }
+}
 
 @Injectable()
 export default class EventRepository implements IEventRepository {
@@ -11,52 +50,48 @@ export default class EventRepository implements IEventRepository {
         private readonly databaseService: PrismaDatabaseService,
     ) { }
 
-    async createNew(event: EventAggregate): Promise<number> {
-        const result = await this.databaseService.event.create({
-            data: {
-                name: event.props.name,
-                status: event.props.eventStatus,
-                description: event.props.description,
-                startDate: event.props.startDate,
-                endDate: event.props.endDate,
-                partnerId: event.props.@partner.partnerId,
-            partnerName: event.props.@partner.partnerName,
+    async getById(id: number): Promise<EventAggregate> {
+        const event = await this.databaseService.event.findUnique({
+            where: {
+                id: id
             }
-});
-return result.id;
+        })
+        return toEntity(event);
     }
 
-    async updateById(event: EventAggregate): Promise < void> {
-    if(!event.id) {
-    throw new RepositoryError('Event ID is required');
-}
-const result = await this.databaseService.event.update({
-    where: {
-        id: event.id
-    },
-    data: {
-        name: event.props.name,
-        status: event.props.eventStatus,
-        description: event.props.description,
-        startDate: event.props.startDate,
-        endDate: event.props.endDate,
-        partnerId: event.props.@partner.partnerId,
-    partnerName: event.props.@partner.partnerName,
+    async createNew(event: EventAggregate): Promise<number> {
+        const res = await this.databaseService.event.create({
+            data: toDataModel(event)
+        });
+        return res.id;
+    }
+
+    async update(event: EventAggregate): Promise<void> {
+        const dataModel = toDataModel(event);
+        await this.databaseService.event.update({
+            where: {
+                id: event.id
+            },
+            data: dataModel
+        });
+    }
+
+    async delete(event: EventAggregate): Promise<void> {
+        await this.databaseService.event.delete({
+            where: {
+                id: event.id
             }
         });
-if (!result) {
-    throw new RepositoryError('Event not found');
-}
     }
 
-    async deleteById(id: number): Promise < void> {
-    const result = await this.databaseService.event.delete({
-        where: {
-            id: id
-        }
-    });
-    if(!result) {
-        throw new RepositoryError('Event not found');
+    async updateExternal(exPartner: ExternalPartner): Promise<void> {
+        await this.databaseService.event.updateMany({
+            where: {
+                partnerId: exPartner.id
+            },
+            data: {
+                partnerName: exPartner.name
+            }
+        })
     }
-}
 }

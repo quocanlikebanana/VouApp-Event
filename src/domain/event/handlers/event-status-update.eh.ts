@@ -8,6 +8,6 @@ export class EventStatusUpdateEventHandler implements DomainEventHandler<EventSt
     ) { }
 
     async handle(event: EventStatusUpdateEvent): Promise<void> {
-        await this.eventRepository.updateEventStatus(event.event);
+        await this.eventRepository.update(event.event);
     }
 }

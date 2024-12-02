@@ -31,7 +31,7 @@ export abstract class Entity<T> {
 		this._props = newProps;
 	}
 
-	public get isNewEntity(): boolean {
+	public isNewEntity(): boolean {
 		return this._id === null;
 	}
 }
