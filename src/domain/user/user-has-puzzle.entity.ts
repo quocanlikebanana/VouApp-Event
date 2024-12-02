@@ -13,6 +13,10 @@ export default class UserHasPuzzleEntity extends Entity<UserHasPuzzleProps> {
         }
     }
 
+    public static create(props: UserHasPuzzleProps, id?: string): UserHasPuzzleEntity {
+        return new UserHasPuzzleEntity(props, id);
+    }
+
     addQuantity(quantity: number): void {
         this.props.quantity += quantity;
     }

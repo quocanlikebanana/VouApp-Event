@@ -4,7 +4,7 @@ export abstract class Entity<T> {
 	private readonly _id: string;
 	private _props: T;
 
-	constructor(props: T, id: string = null) {
+	protected constructor(props: T, id: string = null) {
 		// Id must be assigned first
 		this._id = id ?? generateUuid();
 		this.validate(props);

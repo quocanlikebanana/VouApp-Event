@@ -1,10 +1,10 @@
 import { ValueObject } from "src/domain/common/entity/value-object.a";
-import RewardValueObject from "../game/reward.vo";
+import RewardEntity from "../game/reward.entity";
 
 export type UserJoinGameHistoryProps = {
     date: Date;
     score: number;
-    rewards: RewardValueObject[];
+    rewards: RewardEntity[];
 };
 
 export default class UserJoinGameHistoryValueObject extends ValueObject<UserJoinGameHistoryProps> {

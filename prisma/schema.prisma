@@ -88,7 +88,6 @@ model UserJoinEvent_Has_PromotionOfEvent {
 model UserJoinEvent_Exchange_PuzzleSetOfEvent {
     id           String   @id @default(uuid())
     exchangeDate DateTime
-    isWin        Boolean
 
     PuzzleSet_Of_Event   PuzzleSet_Of_Event? @relation(fields: [puzzleSet_Of_EventId], references: [id])
     puzzleSet_Of_EventId String

@@ -1,7 +1,7 @@
 import GameAggregate from "src/domain/game/game.agg";
 import { Game, Promotion, PuzzleSet } from "../types/event.type";
 import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
-import RewardValueObject from "src/domain/game/reward.vo";
+import RewardEntity from "src/domain/game/reward.entity";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 import PuzzleSetPrizeValueObject from "src/domain/puzzle/puzzle-set-prize.vo";
 import PromotionAggregate from "src/domain/promotion/promotion.agg";
@@ -20,7 +20,7 @@ export function Games_GameEntities(games: Game[]): GameAggregate[] {
                     metric: rule.metric,
                     threshold: rule.threshold,
                     rewards: rule.rewards.map(reward => {
-                        return new RewardValueObject({
+                        return new RewardEntity({
                             rewardId: reward.rewardId,
                             type: reward.type,
                             quantity: reward.quantity

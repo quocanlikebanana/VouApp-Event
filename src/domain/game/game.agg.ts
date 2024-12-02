@@ -1,7 +1,7 @@
 import { Entity } from "src/domain/common/entity/entity.a";
 import RewardRuleValueObject from "./reward-rule.vo";
 import { DomainError } from "src/domain/common/errors/domain.err";
-import RewardValueObject from "./reward.vo";
+import RewardEntity from "./reward.entity";
 import { Metric } from "src/domain/common/types/enums";
 import AggregateRoot from "../common/entity/aggregate.a";
 
@@ -25,8 +25,8 @@ export default class GameAggregate extends AggregateRoot<GameProps> {
         return new GameAggregate(props, id);
     }
 
-    private checkReward(metric: Metric, value: number): RewardValueObject[] | null {
-        let rewards: RewardValueObject[] | null = null;
+    private checkReward(metric: Metric, value: number): RewardEntity[] | null {
+        let rewards: RewardEntity[] | null = null;
         const filteredRules = this.props.rewardRules.filter(rule => rule.props.metric === metric);
         // ASC for TOP, DESC for SCORE
         const sortedRules = filteredRules.sort(
@@ -43,11 +43,11 @@ export default class GameAggregate extends AggregateRoot<GameProps> {
         return rewards;
     }
 
-    checkTopReward(top: number): RewardValueObject[] | null {
+    checkTopReward(top: number): RewardEntity[] | null {
         return this.checkReward(Metric.TOP, top);
     }
 
-    checkScoreReward(score: number): RewardValueObject[] | null {
+    checkScoreReward(score: number): RewardEntity[] | null {
         return this.checkReward(Metric.SCORE, score);
     }
 

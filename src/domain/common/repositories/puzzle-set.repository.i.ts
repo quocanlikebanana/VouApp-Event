@@ -6,7 +6,7 @@ import { ExternalPuzzleSet } from "../types/external.type";
 export default abstract class IPuzzleSetRepository {
     abstract getById(puzzleSetId: string): Promise<PuzzleSetAggregate>;
     abstract getPuzzleById(puzzleId: string): Promise<PuzzleEntity>;
-    abstract addPuzzleSetsOfEvent(puzzleSet: PuzzleSetAggregate[]): Promise<void>;
+    abstract addPuzzleSetsOfEvent(event: EventAggregate, puzzleSet: PuzzleSetAggregate[]): Promise<void>;
     abstract removePuzzleSetsOfEvent(event: EventAggregate): Promise<void>;
     abstract updateExternal(exPuzzleSet: ExternalPuzzleSet): Promise<void>;
 }

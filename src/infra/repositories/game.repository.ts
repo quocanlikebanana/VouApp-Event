@@ -6,7 +6,7 @@ import GameAggregate from "src/domain/game/game.agg";
 import { Injectable } from "@nestjs/common";
 import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
 import { Metric, RewardValueType } from "src/domain/common/types/enums";
-import RewardValueObject from "src/domain/game/reward.vo";
+import RewardEntity from "src/domain/game/reward.entity";
 import { $Enums } from "@prisma/client";
 
 type GameDataModel = {
@@ -47,7 +47,7 @@ function toEntity(res: GameDataModel): GameAggregate {
                 metric: rule.metric as Metric,
                 threshold: rule.threshold,
                 rewards: rule.Reward.map(reward => {
-                    return new RewardValueObject({
+                    return RewardEntity.create({
                         rewardId: reward.id,
                         type: reward.type as RewardValueType,
                         quantity: reward.quantity,
@@ -144,11 +144,23 @@ export default class GameRepository implements IGameRepository {
         }
     }
 
-    removeGamesOfEvent(event: EventAggregate): Promise<void> {
-        throw new Error("Method not implemented.");
+    async removeGamesOfEvent(event: EventAggregate): Promise<void> {
+        await this.databaseService.game_Of_Event.deleteMany({
+            where: {
+                eventId: event.id
+            }
+        });
     }
 
-    updateExternal(exGame: ExternalGame): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateExternal(exGame: ExternalGame): Promise<void> {
+        await this.databaseService.game_Of_Event.updateMany({
+            where: {
+                gameId: exGame.id
+            },
+            data: {
+                gameName: exGame.name,
+                gameDescription: exGame.description
+            }
+        });
     }
 }

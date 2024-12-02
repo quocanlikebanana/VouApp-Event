@@ -16,4 +16,8 @@ export default class PromotionAggregate extends AggregateRoot<PromotionProps> {
             throw new DomainError("Quantity must be positive");
         }
     }
+
+    public static create(props: PromotionProps, id?: string): PromotionAggregate {
+        return new PromotionAggregate(props, id);
+    }
 }

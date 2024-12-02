@@ -1,5 +1,5 @@
 import UserJoinGameHistoryValueObject from "./user-join-game-history.vo";
-import RewardValueObject from "../game/reward.vo";
+import RewardEntity from "../game/reward.entity";
 import { Entity } from "../common/entity/entity.a";
 import GameAggregate from "../game/game.agg";
 
@@ -9,7 +9,7 @@ export type UserJoinGameProps = {
     histories: UserJoinGameHistoryValueObject[];
     _rank?: {
         top: number;
-        rewards?: RewardValueObject[];
+        rewards?: RewardEntity[];
     };
 };
 
@@ -18,6 +18,10 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         if (props.turn < 0) {
             throw new Error("Turn must be greater than or equal to 0.");
         }
+    }
+
+    public static create(props: UserJoinGameProps, id?: string): UserJoinGameEntity {
+        return new UserJoinGameEntity(props, id);
     }
 
     isEvaluated(): boolean {
@@ -35,7 +39,7 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         this.props.turn -= turn;
     }
 
-    evaluateScore(game: GameAggregate, score: number): RewardValueObject[] | null {
+    evaluateScore(game: GameAggregate, score: number): RewardEntity[] | null {
         const rewards = game.checkScoreReward(score);
         const now = new Date();
         const history = new UserJoinGameHistoryValueObject({
@@ -47,7 +51,7 @@ export default class UserJoinGameEntity extends Entity<UserJoinGameProps> {
         return rewards;
     }
 
-    evaluateRank(game: GameAggregate, top: number): RewardValueObject[] | null {
+    evaluateRank(game: GameAggregate, top: number): RewardEntity[] | null {
         const rewards = game.checkTopReward(top);
         this.props._rank = {
             top,

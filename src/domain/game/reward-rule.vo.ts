@@ -1,12 +1,12 @@
 import { ValueObject } from "src/domain/common/entity/value-object.a";
 import { Metric } from "src/domain/common/types/enums";
-import RewardValueObject from "./reward.vo";
+import RewardEntity from "./reward.entity";
 import { DomainError } from "src/domain/common/errors/domain.err";
 
 export type RewardRuleProps = {
     metric: Metric;
     threshold: number;
-    rewards: RewardValueObject[];
+    rewards: RewardEntity[];
 }
 
 export default class RewardRuleValueObject extends ValueObject<RewardRuleProps> {

@@ -28,6 +28,10 @@ export default class PuzzleSetAggregate extends AggregateRoot<PuzzleSetProps> {
         }
     }
 
+    public static create(props: PuzzleSetProps, id?: string): PuzzleSetAggregate {
+        return new PuzzleSetAggregate(props, id);
+    }
+
     getpuzzleSetPrize(): PuzzleSetPrizeValueObject[] {
         return this.props.puzzleSetPrize;
     }

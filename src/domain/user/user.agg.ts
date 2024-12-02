@@ -11,7 +11,7 @@ import AggregateRoot from "../common/entity/aggregate.a";
 import AddUserPromotionEvent from "./events/add-user-promotion.event";
 import { RewardValueType } from "../common/types/enums";
 import AddUserPuzzleEvent from "./events/add-user-puzzle.event";
-import RewardValueObject from "../game/reward.vo";
+import RewardEntity from "../game/reward.entity";
 
 export type UserProps = {
     ex_user: {
@@ -60,6 +60,10 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
             }
             promotionIdSet.add(item.props.promotionOfEventId);
         }
+    }
+
+    public static create(props: UserProps, id?: string): UserAggregate {
+        return new UserAggregate(props, id);
     }
 
     addPromotion(promotion: PromotionAggregate, quantity: number): void {
@@ -175,7 +179,7 @@ export default class UserAggregate extends AggregateRoot<UserProps> {
         return userJoinGame;
     }
 
-    private dispatchRewards(rewards: RewardValueObject[]): void {
+    private dispatchRewards(rewards: RewardEntity[]): void {
         for (const reward of rewards) {
             if (reward.props.type === RewardValueType.PROMOTION) {
                 this.immidiateDispatch(new AddUserPromotionEvent(this, reward.props.rewardId, reward.props.quantity));

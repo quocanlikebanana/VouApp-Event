@@ -8,10 +8,14 @@ export type RewardProps = {
     quantity: number;
 };
 
-export default class RewardValueObject extends Entity<RewardProps> {
+export default class RewardEntity extends Entity<RewardProps> {
     protected validate(props: RewardProps): void {
         if (props.quantity < 0) {
             throw new DomainError("Quantity must be positive");
         }
+    }
+
+    public static create(reward: RewardProps, id?: string): RewardEntity {
+        return new RewardEntity(reward, id);
     }
 }
