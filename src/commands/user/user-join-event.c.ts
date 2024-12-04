@@ -1,6 +1,6 @@
 import UserAggregate from "src/domain/user/user.agg";
-import { ICommand } from "../common/abstract/command.handler.i";
-import IUnitOfWork from "../common/abstract/unit-of-work.i";
+import { ICommand } from "../common/command.handler.i";
+import IUnitOfWork from "../common/unit-of-work.i";
 
 export type UserJoinEventParam = {
     userId: string;

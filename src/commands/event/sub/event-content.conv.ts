@@ -1,5 +1,5 @@
 import GameAggregate from "src/domain/game/game.agg";
-import { Game, Promotion, PuzzleSet } from "../types/event.type";
+import { Game, Promotion, PuzzleSet } from "./event.type";
 import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
 import RewardEntity from "src/domain/game/reward.entity";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
@@ -9,7 +9,7 @@ import PuzzleEntity from "src/domain/puzzle/puzzle.entity";
 
 export function Games_GameEntities(games: Game[]): GameAggregate[] {
     return games.map(game => {
-        return new GameAggregate({
+        return GameAggregate.create({
             ex_game: {
                 id: game.gameId,
                 name: game.gamName,
@@ -20,7 +20,7 @@ export function Games_GameEntities(games: Game[]): GameAggregate[] {
                     metric: rule.metric,
                     threshold: rule.threshold,
                     rewards: rule.rewards.map(reward => {
-                        return new RewardEntity({
+                        return RewardEntity.create({
                             rewardId: reward.rewardId,
                             type: reward.type,
                             quantity: reward.quantity
@@ -33,15 +33,16 @@ export function Games_GameEntities(games: Game[]): GameAggregate[] {
 }
 
 export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSetAggregate[] {
-    return puzzleSets.map(puzzleSet => new PuzzleSetAggregate({
+    return puzzleSets.map(puzzleSet => PuzzleSetAggregate.create({
         ex_puzzleSet: {
             id: puzzleSet.puzzleSetId,
             name: puzzleSet.puzzleSetName
         },
-        puzzles: puzzleSet.puzzles.map(puzzle => new PuzzleEntity({
+        puzzles: puzzleSet.puzzles.map(puzzle => PuzzleEntity.create({
             ex: {
                 id: puzzle.puzzleId,
                 name: puzzle.puzzleName,
+                puzzleSetId: puzzleSet.puzzleSetId
             },
             puzzleSetId: puzzleSet.puzzleSetId
         })),
@@ -53,7 +54,7 @@ export function PuzzleSets_PuzzleSetEntities(puzzleSets: PuzzleSet[]): PuzzleSet
 }
 
 export function Promotions_PromotionEntities(promotions: Promotion[]): PromotionAggregate[] {
-    return promotions.map(promotion => new PromotionAggregate({
+    return promotions.map(promotion => PromotionAggregate.create({
         ex_promotion: {
             id: promotion.promotionId,
             name: promotion.promotionName,

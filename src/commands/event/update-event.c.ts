@@ -1,8 +1,8 @@
-import { ICommand } from "src/commands/common/abstract/command.handler.i";
+import { ICommand } from "src/commands/common/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import { CreateEventParam } from "./create-event.c";
-import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "../common/converter/event-content.conv";
-import IUnitOfWork from "../common/abstract/unit-of-work.i";
+import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "./sub/event-content.conv";
+import IUnitOfWork from "../common/unit-of-work.i";
 
 export type UpdateEventParam = Partial<CreateEventParam> & { id: string };
 

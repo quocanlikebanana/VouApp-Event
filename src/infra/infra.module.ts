@@ -12,7 +12,7 @@ import IPuzzleSetRepository from 'src/domain/common/repositories/puzzle-set.repo
 import IUserRepository from 'src/domain/common/repositories/user.repository.i';
 import { HashingService } from './common/helper/hasing.service';
 import { UnitOfWork } from './common/unitofwork/unit-of-work';
-import IUnitOfWork from 'src/commands/common/abstract/unit-of-work.i';
+import IUnitOfWork from 'src/commands/common/unit-of-work.i';
 
 // Dependency Inversion with NestJS: https://trilon.io/blog/dependency-inversion-principle
 

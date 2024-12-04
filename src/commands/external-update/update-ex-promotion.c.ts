@@ -1,6 +1,6 @@
-import { ICommand } from "../common/abstract/command.handler.i";
+import { ICommand } from "../common/command.handler.i";
 import { ExternalPromotion } from "src/domain/common/types/external.type";
-import IUnitOfWork from "../common/abstract/unit-of-work.i";
+import IUnitOfWork from "../common/unit-of-work.i";
 
 export default class UpdateExPromotionCommand implements ICommand<ExternalPromotion, void> {
     constructor(

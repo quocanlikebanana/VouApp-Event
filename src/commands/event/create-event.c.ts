@@ -1,10 +1,10 @@
-import { ICommand } from "src/commands/common/abstract/command.handler.i";
+import { ICommand } from "src/commands/common/command.handler.i";
 import { EventAggregate } from "src/domain/event/event.agg";
 import GameAggregate from "src/domain/game/game.agg";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
-import { Game, Promotion, PuzzleSet } from "../common/types/event.type";
-import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "../common/converter/event-content.conv";
-import IUnitOfWork from "../common/abstract/unit-of-work.i";
+import { Game, Promotion, PuzzleSet } from "./sub/event.type";
+import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "./sub/event-content.conv";
+import IUnitOfWork from "../common/unit-of-work.i";
 
 export type CreateEventParam = {
 	name: string;

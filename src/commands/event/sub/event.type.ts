@@ -1,31 +1,31 @@
 import { Metric, RewardValueType } from "src/domain/common/types/enums";
 
 type PuzzleSetPrize = {
-    promotionId: number;
+    promotionId: string;
     quantity: number;
 }
 
 type Puzzle = {
-    puzzleId: number;
+    puzzleId: string;
     puzzleName: string;
 }
 
 type PuzzleSet = {
-    puzzleSetId: number;
+    puzzleSetId: string;
     puzzleSetName: string;
     puzzles: Puzzle[];
     prizes: PuzzleSetPrize[];
 }
 
 type Promotion = {
-    promotionId: number;
+    promotionId: string;
     promotionName: string;
     promotionDescription: string;
     quantity: number;
 }
 
 type Reward = {
-    rewardId: number;
+    rewardId: string;
     type: RewardValueType;
     quantity: number;
 }
@@ -37,7 +37,7 @@ type RewardRule = {
 }
 
 type Game = {
-    gameId: number;
+    gameId: string;
     gamName: string;
     gameDescription: string;
     rewardRule: RewardRule[];
