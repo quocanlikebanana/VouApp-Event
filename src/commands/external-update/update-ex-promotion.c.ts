@@ -2,7 +2,7 @@ import { ICommand } from "../common/abstract/command.handler.i";
 import { ExternalPromotion } from "src/domain/common/types/external.type";
 import IUnitOfWork from "../common/abstract/unit-of-work.i";
 
-export default class UpdatePromotionCommand implements ICommand<ExternalPromotion, void> {
+export default class UpdateExPromotionCommand implements ICommand<ExternalPromotion, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork
     ) { }

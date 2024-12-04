@@ -1,9 +1,7 @@
-import { Catch, ArgumentsHost, HttpStatus, HttpException, ConsoleLogger } from "@nestjs/common";
+import { Catch, ArgumentsHost, HttpStatus, HttpException } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
 import { Request, Response } from "express";
-import { PrismaClientKnownRequestError, PrismaClientRustPanicError, PrismaClientUnknownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/library";
-import { DomainError as DomainError } from "../domain/common/errors/domain.err";
-import { CommandError } from "./commands/common/error/usecase.err";
+import { DomainError as DomainError } from "../../domain/common/errors/domain.err";
 
 // Define the error response format
 type MyError = {
@@ -30,11 +28,6 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 		if (exception instanceof DomainError) {
 			responseError.statusCode = HttpStatus.BAD_REQUEST;
 			responseError.response = `Domain: ${exception.message}`;
-		}
-
-		else if (exception instanceof CommandError) {
-			responseError.statusCode = HttpStatus.BAD_REQUEST;
-			responseError.response = exception.message;
 		}
 
 		// Http errors

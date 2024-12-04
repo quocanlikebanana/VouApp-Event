@@ -1,15 +1,15 @@
 import { ICommand } from "../common/abstract/command.handler.i";
-import { ExternalUser } from "src/domain/common/types/external.type";
+import { ExternalGame } from "src/domain/common/types/external.type";
 import IUnitOfWork from "../common/abstract/unit-of-work.i";
 
-export default class UpdateUserCommand implements ICommand<ExternalUser, void> {
+export default class UpdateExGameCommand implements ICommand<ExternalGame, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork
     ) { }
 
-    async execute(param: ExternalUser): Promise<void> {
+    async execute(param: ExternalGame): Promise<void> {
         await this.unitOfWork.execute(async (uow) => {
-            await uow.userRepository.updateExternal(param);
+            await uow.gameRepository.updateExternal(param);
         });
     }
 }

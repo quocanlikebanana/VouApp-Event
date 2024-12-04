@@ -4,9 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ControllerModule } from './controller/controller.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ConfigModule as MyConfigModule } from './config/config.module';
-import { DomainModule } from './domain/domain.module';
-
+import { ConfigModule as MyConfigModule } from './controller/config/config.module';
 
 @Module({
 	imports: [
@@ -25,7 +23,6 @@ import { DomainModule } from './domain/domain.module';
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) => ({
-
 			}),
 			global: true,
 			inject: [ConfigService],
@@ -33,7 +30,6 @@ import { DomainModule } from './domain/domain.module';
 
 		ControllerModule,
 		MyConfigModule,
-		DomainModule,
 	],
 	providers: [
 		{

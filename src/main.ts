@@ -1,6 +1,6 @@
 import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter } from './config/all-exceptions.filter';
+import { AllExceptionsFilter } from './controller/config/all-exceptions.filter';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 let app: INestApplication = null;
@@ -9,7 +9,8 @@ async function bootstrap() {
 	app = await NestFactory.create(AppModule);
 
 	// All validation pipe
-	app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalPipes(new ValidationPipe({
+	}));
 
 	// All exception handler
 	const { httpAdapter } = app.get(HttpAdapterHost);

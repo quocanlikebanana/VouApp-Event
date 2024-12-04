@@ -2,7 +2,7 @@ import { ICommand } from "src/commands/common/abstract/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IUnitOfWork from "../common/abstract/unit-of-work.i";
 
-type DeleteEventParam = {
+export type DeleteEventParam = {
     id: string;
 }
 

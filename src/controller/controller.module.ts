@@ -1,22 +1,60 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user/user.controller';
-import { AuthController } from './auth/auth.controller';
-import { UsecaseModule } from 'src/usecases/usecase.module';
-import LocalStrategy from './common/passport/local.strategy';
-import JwtStrategy from './common/passport/jwt.strategy';
-import { RawDatabaseModule } from './common/test/raw-db.module';
-import TestInjectLocalStrategy from './common/passport/test-sqli.local.strategy';
+import ApproveEventCommand from 'src/commands/event/approve-event.c';
+import CreateEventCommand from 'src/commands/event/create-event.c';
+import DeleteEventCommand from 'src/commands/event/delete-event.c';
+import UpdateEventCommand from 'src/commands/event/update-event.c';
+import UpdateExGameCommand from 'src/commands/external-update/update-ex-game.c';
+import UpdateExPartnerCommand from 'src/commands/external-update/update-ex-partner.c';
+import UpdateExPromotionCommand from 'src/commands/external-update/update-ex-promotion.c';
+import UpdateExPuzzleSetCommand from 'src/commands/external-update/update-ex-puzzle-set.c';
+import UpdateExUserCommand from 'src/commands/external-update/update-ex-user.c';
+import UserEvaluateScoreCommand from 'src/commands/game/user-evaluate-score.c';
+import UserEvaluateTopCommand from 'src/commands/game/user-evaluate-top.c';
+import UserGiveTurnCommand from 'src/commands/game/user-give-turn.c';
+import UserPlayGameCommand from 'src/commands/game/user-play-game.c';
+import { UserExchangePuzzleSetCommand } from 'src/commands/puzzle/user-exchange-puzzle-set.c';
+import { UserGivePuzzleCommand } from 'src/commands/puzzle/user-give-puzzle.c';
+import UserJoinEventCommand from 'src/commands/user/user-join-event.c';
+import UserJoinGameCommand from 'src/commands/user/user-join-game.c';
+import UserLeaveEventCommand from 'src/commands/user/user-leave-event.c';
+import { InfraModule } from 'src/infra/infra.module';
 
 @Module({
-	imports: [UsecaseModule, RawDatabaseModule],
+	imports: [
+		InfraModule,
+	],
 	controllers: [
-		UserController,
-		AuthController,
+
 	],
 	providers: [
-		LocalStrategy,
-		JwtStrategy,
-		TestInjectLocalStrategy,
+		// Event
+		ApproveEventCommand,
+		CreateEventCommand,
+		DeleteEventCommand,
+		UpdateEventCommand,
+		UpdateExGameCommand,
+
+		// External
+		UpdateExGameCommand,
+		UpdateExPartnerCommand,
+		UpdateExPromotionCommand,
+		UpdateExPuzzleSetCommand,
+		UpdateExUserCommand,
+
+		// Game
+		UserEvaluateScoreCommand,
+		UserEvaluateTopCommand,
+		UserGiveTurnCommand,
+		UserPlayGameCommand,
+
+		// PuzzleSet
+		UserExchangePuzzleSetCommand,
+		UserGivePuzzleCommand,
+
+		// User
+		UserJoinGameCommand,
+		UserJoinEventCommand,
+		UserLeaveEventCommand,
 	],
 })
 export class ControllerModule { }
