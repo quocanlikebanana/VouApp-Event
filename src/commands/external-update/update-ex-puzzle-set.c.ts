@@ -1,7 +1,9 @@
 import { ICommand } from "../common/command.handler.i";
 import { ExternalPuzzleSet } from "src/domain/common/types/external.type";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export default class UpdateExPuzzleSetCommand implements ICommand<ExternalPuzzleSet, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

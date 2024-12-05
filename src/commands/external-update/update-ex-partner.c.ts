@@ -1,7 +1,9 @@
 import { ICommand } from "../common/command.handler.i";
 import { ExternalPartner } from "src/domain/common/types/external.type";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export default class UpdateExPartnerCommand implements ICommand<ExternalPartner, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

@@ -1,12 +1,14 @@
 import { ICommand } from "../common/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type UserJoinGameParam = {
     userOfEventId: string;
     gameOfEventId: string;
 }
 
+@Injectable()
 export default class UserJoinGameCommand implements ICommand<UserJoinGameParam, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

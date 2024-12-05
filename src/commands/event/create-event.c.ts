@@ -5,6 +5,7 @@ import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 import { Game, Promotion, PuzzleSet } from "./sub/event.type";
 import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "./sub/event-content.conv";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type CreateEventParam = {
 	name: string;
@@ -20,6 +21,7 @@ export type CreateEventParam = {
 	puzzleSets: PuzzleSet[];
 }
 
+@Injectable()
 export default class CreateEventCommand implements ICommand<CreateEventParam, void> {
 	constructor(
 		private readonly unitOfWork: IUnitOfWork,

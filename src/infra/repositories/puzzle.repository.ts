@@ -5,6 +5,8 @@ import PuzzleEntity from "src/domain/puzzle/puzzle.entity";
 import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
 import PuzzleSetPrizeValueObject from "src/domain/puzzle/puzzle-set-prize.vo";
+import { Injectable } from "@nestjs/common";
+import { DomainError } from "src/domain/common/errors/domain.err";
 
 type PuzzleSetDataModel = {
     Puzzle_Of_Events: {
@@ -51,6 +53,7 @@ function toEntity(puzzleSet: PuzzleSetDataModel): PuzzleSetAggregate {
     }, puzzleSet.id);
 }
 
+@Injectable()
 export default class PuzzleSetRepository implements IPuzzleSetRepository {
     constructor(
         private readonly databaseService: PrismaDatabaseService
@@ -66,6 +69,9 @@ export default class PuzzleSetRepository implements IPuzzleSetRepository {
                 PromotionOfEvent_For_PuzzleSetOfEvents: true
             }
         });
+        if (!puzzleSet) {
+            throw new DomainError('Puzzle set not found');
+        }
         return toEntity(puzzleSet);
     }
 

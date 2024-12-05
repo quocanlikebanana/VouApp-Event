@@ -10,6 +10,8 @@ import UserHasPromotionValueObject from "src/domain/user/user-has-promotion.vo";
 import RewardEntity from "src/domain/game/reward.entity";
 import { RewardValueType } from "src/domain/common/types/enums";
 import { $Enums } from "@prisma/client";
+import { Injectable } from "@nestjs/common";
+import { DomainError } from "src/domain/common/errors/domain.err";
 
 type UserDataModel = {
     UserJoinEvent_Has_Puzzles: {
@@ -142,6 +144,7 @@ function toEntity(user: UserDataModel): UserAggregate {
     }, user.id);
 }
 
+@Injectable()
 export default class UserRepository implements IUserRepository {
     constructor(
         private readonly databaseService: PrismaDatabaseService
@@ -176,6 +179,9 @@ export default class UserRepository implements IUserRepository {
                 }
             }
         });
+        if (!user) {
+            throw new DomainError('User not found');
+        }
         return toEntity(user);
     }
 

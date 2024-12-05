@@ -3,7 +3,10 @@ import { ExternalPromotion } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
 import PromotionAggregate from "src/domain/promotion/promotion.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
+import { Injectable } from "@nestjs/common";
+import { DomainError } from "src/domain/common/errors/domain.err";
 
+@Injectable()
 export default class PromotionRepository implements IPromotionRepository {
     constructor(
         private readonly databaseService: PrismaDatabaseService
@@ -15,6 +18,9 @@ export default class PromotionRepository implements IPromotionRepository {
                 id
             },
         });
+        if (!promotion) {
+            throw new DomainError('Promotion not found');
+        }
         return PromotionAggregate.create({
             ex_promotion: {
                 id: promotion.id,

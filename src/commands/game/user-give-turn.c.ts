@@ -1,6 +1,7 @@
 import { ICommand } from "../common/command.handler.i";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type UserGiveTurnParam = {
     userOfEventId_Give: string;
@@ -9,6 +10,7 @@ export type UserGiveTurnParam = {
     turn: number;
 }
 
+@Injectable()
 export default class UserGiveTurnCommand implements ICommand<UserGiveTurnParam, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

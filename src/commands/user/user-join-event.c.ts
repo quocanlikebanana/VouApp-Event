@@ -1,6 +1,7 @@
 import UserAggregate from "src/domain/user/user.agg";
 import { ICommand } from "../common/command.handler.i";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type UserJoinEventParam = {
     userId: string;
@@ -12,6 +13,7 @@ export type UserJoinEventParam = {
     joinDate: Date;
 }
 
+@Injectable()
 export default class UserJoinEventCommand implements ICommand<UserJoinEventParam, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

@@ -1,3 +1,4 @@
+import { Injectable } from "@nestjs/common";
 import { ICommand } from "../common/command.handler.i";
 import IUnitOfWork from "../common/unit-of-work.i";
 
@@ -7,6 +8,7 @@ export type UserEvaluateScoreParam = {
     score: number;
 }
 
+@Injectable()
 export default class UserEvaluateScoreCommand implements ICommand<UserEvaluateScoreParam, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork,

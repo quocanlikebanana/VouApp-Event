@@ -3,9 +3,11 @@ import { DomainError } from "src/domain/common/errors/domain.err";
 import { CreateEventParam } from "./create-event.c";
 import { Games_GameEntities, Promotions_PromotionEntities, PuzzleSets_PuzzleSetEntities } from "./sub/event-content.conv";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type UpdateEventParam = Partial<CreateEventParam> & { id: string };
 
+@Injectable()
 export default class UpdateEventCommand implements ICommand<Partial<UpdateEventParam>, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork,

@@ -1,7 +1,9 @@
 import { ICommand } from "../common/command.handler.i";
 import { ExternalPromotion } from "src/domain/common/types/external.type";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export default class UpdateExPromotionCommand implements ICommand<ExternalPromotion, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork

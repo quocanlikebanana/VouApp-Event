@@ -20,6 +20,7 @@ import UserLeaveEventCommand from 'src/commands/user/user-leave-event.c';
 import { InfraModule } from 'src/infra/infra.module';
 import PingController from './ping/ping.controller';
 import { EventController } from './event/event.controller';
+import { UnitOfWork } from 'src/infra/common/unitofwork/unit-of-work';
 
 @Module({
 	imports: [

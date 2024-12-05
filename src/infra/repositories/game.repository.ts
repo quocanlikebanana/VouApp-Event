@@ -8,6 +8,7 @@ import RewardRuleValueObject from "src/domain/game/reward-rule.vo";
 import { Metric, RewardValueType } from "src/domain/common/types/enums";
 import RewardEntity from "src/domain/game/reward.entity";
 import { $Enums } from "@prisma/client";
+import { DomainError } from "src/domain/common/errors/domain.err";
 
 type GameDataModel = {
     Reward_Rule_GameOfEvents: (
@@ -77,6 +78,9 @@ export default class GameRepository implements IGameRepository {
                 }
             }
         });
+        if (!res) {
+            throw new DomainError('Game not found');
+        }
         return toEntity(res);
     }
 

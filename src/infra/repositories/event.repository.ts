@@ -5,6 +5,7 @@ import { EventStatus } from "src/domain/common/types/enums";
 import { ExternalPartner } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
 import { PrismaDatabaseService } from "../common/database/database.service";
+import { DomainError } from "src/domain/common/errors/domain.err";
 
 type EventDataModel = {
     id?: string;
@@ -55,7 +56,10 @@ export default class EventRepository implements IEventRepository {
             where: {
                 id: id
             }
-        })
+        });
+        if (!event) {
+            throw new DomainError('Event not found');
+        }
         return toEntity(event);
     }
 

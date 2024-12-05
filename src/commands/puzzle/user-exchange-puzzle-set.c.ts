@@ -3,12 +3,14 @@ import PuzzleSetAggregate from "src/domain/puzzle/puzzleset.agg";
 import UserAggregate from "src/domain/user/user.agg";
 import { DomainError } from "src/domain/common/errors/domain.err";
 import IUnitOfWork from "../common/unit-of-work.i";
+import { Injectable } from "@nestjs/common";
 
 export type UserExchangePuzzleSetParam = {
     userJoinEventId: string;
     puzzleSetOfEventId: string;
 }
 
+@Injectable()
 export class UserExchangePuzzleSetCommand implements ICommand<UserExchangePuzzleSetParam, void> {
     constructor(
         private readonly unitOfWork: IUnitOfWork
