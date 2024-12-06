@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "dotenv -e .env.test.local -- jest --config ./test/jest-e2e.json",
+    "prepare:fake-db": "dotenv -e .env.test.local -- npx prisma migrate reset --force --skip-seed",
+    "test:fake-db:e2e": "npm run prepare:test-db && npm run test:e2e",
+    "test:fake-db": "npm run prepare:test-db && npm run test"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -54,7 +57,7 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/schematics": "^10.0.0",
-    "@nestjs/testing": "^10.0.0",
+    "@nestjs/testing": "^10.4.13",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
@@ -92,6 +95,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

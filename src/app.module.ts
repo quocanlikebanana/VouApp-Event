@@ -4,7 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ControllerModule } from './controller/controller.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ConfigModule as MyConfigModule } from './controller/config/config.module';
+import configuration from './config/configuration';
 
 @Module({
 	imports: [
@@ -19,6 +19,7 @@ import { ConfigModule as MyConfigModule } from './controller/config/config.modul
 		ConfigModule.forRoot({
 			isGlobal: true,
 			cache: true,
+			load: [configuration],
 		}),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
@@ -29,7 +30,6 @@ import { ConfigModule as MyConfigModule } from './controller/config/config.modul
 		}),
 
 		ControllerModule,
-		MyConfigModule,
 	],
 	providers: [
 		{

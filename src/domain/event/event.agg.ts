@@ -23,12 +23,15 @@ export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 
 export class EventAggregate extends AggregateRoot<EventProps> {
     protected validate(props: EventProps): void {
+        const now = new Date();
         checkAllPropertiesNotNull(props);
+        if (props.startDate <= now) {
+            throw new DomainError("Start date must be in the future");
+        }
         if (props.startDate >= props.endDate) {
             throw new DomainError("Start date must be before end date");
         }
         // Time status peristence
-        const now = new Date();
         try {
             if (props.startDate <= now) {
                 this.props._eventStatusContext.start();
@@ -43,10 +46,6 @@ export class EventAggregate extends AggregateRoot<EventProps> {
     }
 
     static create(event: CreateEventProps, id?: string): EventAggregate {
-        const now = new Date();
-        if (event.startDate <= now) {
-            throw new DomainError("Start date must be in the future");
-        }
         const newEvent = new EventAggregate(
             {
                 ...event,

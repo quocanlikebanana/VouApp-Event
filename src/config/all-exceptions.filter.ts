@@ -1,7 +1,7 @@
 import { Catch, ArgumentsHost, HttpStatus, HttpException } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
 import { Request, Response } from "express";
-import { DomainError as DomainError } from "../../domain/common/errors/domain.err";
+import { DomainError as DomainError } from "../domain/common/errors/domain.err";
 
 // Define the error response format
 type MyError = {
