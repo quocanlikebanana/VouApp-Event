@@ -16,9 +16,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest.js --runInBand --colors --verbose",
     "test:e2e": "dotenv -e .env.test.local -- jest --config ./test/jest-e2e.json",
-    "prepare:fake-db": "dotenv -e .env.test.local -- npx prisma migrate reset --force --skip-seed",
+    "prepare:test-db": "dotenv -e .env.test.local -- npx prisma migrate reset --force --skip-seed",
     "test:fake-db:e2e": "npm run prepare:test-db && npm run test:e2e",
     "test:fake-db": "npm run prepare:test-db && npm run test"
   },

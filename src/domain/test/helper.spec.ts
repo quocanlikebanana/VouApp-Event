@@ -60,5 +60,13 @@ describe('[Domain][helpers]', () => {
             };
             expect(checkAllPropertiesNotNull(obj)).toBe(true);
         });
+
+        it('should not consider Date as object', () => {
+            const obj = {
+                a: new Date(),
+                b: 'string',
+            };
+            expect(checkAllPropertiesNotNull(obj)).toBe(true);
+        });
     });
 });

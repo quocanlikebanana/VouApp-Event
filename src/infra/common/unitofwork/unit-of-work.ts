@@ -1,5 +1,5 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { PrismaDatabaseService } from '../database/database.service';
+import { PrismaDatabaseService } from '../database/prismadb.service';
 import EventRepository from 'src/infra/repositories/event.repository';
 import IEventRepository from 'src/domain/common/repositories/event.repository.i';
 import IUserRepository from 'src/domain/common/repositories/user.repository.i';

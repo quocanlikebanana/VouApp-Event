@@ -1,8 +1,8 @@
 import EventRepository from "src/infra/repositories/event.repository";
 import { EventAggregate } from "src/domain/event/event.agg";
-import { PrismaDatabaseService } from "src/infra/common/database/database.service";
 import { Test } from "@nestjs/testing";
 import { InfraModule } from "src/infra/infra.module";
+import { PrismaDatabaseService } from "src/infra/common/database/prismadb.service";
 
 describe('EventRepository', () => {
     let eventRepository: EventRepository;

@@ -4,7 +4,7 @@ import UserExchangePuzzleSetValueObject from "src/domain/user/user-exchange-puzz
 import UserJoinGameHistoryValueObject from "src/domain/user/user-join-game-history.vo";
 import UserJoinGameEntity from "src/domain/user/user-join-game.entity";
 import UserAggregate from "src/domain/user/user.agg";
-import { PrismaDatabaseService } from "../common/database/database.service";
+import { PrismaDatabaseService } from "../common/database/prismadb.service";
 import UserHasPuzzleEntity from "src/domain/user/user-has-puzzle.entity";
 import UserHasPromotionValueObject from "src/domain/user/user-has-promotion.vo";
 import RewardEntity from "src/domain/game/reward.entity";

@@ -1,7 +1,18 @@
 import { DomainError } from "src/domain/common/errors/domain.err";
 import { EventStatus } from "src/domain/common/types/enums";
 
-class EventStatusContext {
+interface IEventStatusContext {
+    transitionTo(state: EventStatusState): void;
+    getState(): EventStatus;
+    approve(): void;
+    reject(): void;
+    update(): void;
+    start(): void;
+    end(): void;
+}
+
+class EventStatusContext implements IEventStatusContext {
+    // Cause circular dependency
     private state: EventStatusState;
 
     constructor(eventStatus: EventStatus) {
@@ -57,9 +68,10 @@ class EventStatusContext {
 }
 
 abstract class EventStatusState {
-    protected context: EventStatusContext;
+    // Cause circular dependency
+    protected context: IEventStatusContext;
 
-    public setContext(context: EventStatusContext): void {
+    public setContext(context: IEventStatusContext): void {
         this.context = context;
     }
 
@@ -201,4 +213,11 @@ class EndedState extends EventStatusState {
     }
 }
 
-export default EventStatusContext;
+function createEventStatusContext(eventStatus: EventStatus): IEventStatusContext {
+    return new EventStatusContext(eventStatus);
+}
+
+export {
+    IEventStatusContext,
+    createEventStatusContext
+};

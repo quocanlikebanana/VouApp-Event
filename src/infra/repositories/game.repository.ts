@@ -1,5 +1,5 @@
 import IGameRepository from "src/domain/common/repositories/game.repository.i";
-import { PrismaDatabaseService } from "../common/database/database.service";
+import { PrismaDatabaseService } from "../common/database/prismadb.service";
 import { ExternalGame } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
 import GameAggregate from "src/domain/game/game.agg";

@@ -3,13 +3,13 @@ import { DomainError } from "../common/errors/domain.err";
 import { DomainEventDispatcher } from "src/domain/common/domain-event/domain-event-dispatcher";
 import { EventStatusUpdateEvent } from "./events/event-status-update.event";
 import { EventStatus } from "src/domain/common/types/enums";
-import EventStatusContext from "./subs/event.state.dp";
+import { IEventStatusContext, createEventStatusContext } from "./subs/event.state.dp";
 import AggregateRoot from "../common/entity/aggregate.a";
 
 export type EventProps = {
     name: string;
     description: string;
-    _eventStatusContext: EventStatusContext;
+    _eventStatusContext: IEventStatusContext;
     startDate: Date;
     endDate: Date;
     ex_partner: {
@@ -24,6 +24,7 @@ export type UpdateEventProps = Omit<EventProps, "_eventStatusContext">;
 export class EventAggregate extends AggregateRoot<EventProps> {
     protected validate(props: EventProps): void {
         const now = new Date();
+        debugger;
         checkAllPropertiesNotNull(props);
         if (props.startDate <= now) {
             throw new DomainError("Start date must be in the future");
@@ -49,7 +50,7 @@ export class EventAggregate extends AggregateRoot<EventProps> {
         const newEvent = new EventAggregate(
             {
                 ...event,
-                _eventStatusContext: event.status ? new EventStatusContext(event.status) : new EventStatusContext(EventStatus.PENDING)
+                _eventStatusContext: event.status ? createEventStatusContext(event.status) : createEventStatusContext(EventStatus.PENDING)
             }, id);
         return newEvent;
     }

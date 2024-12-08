@@ -2,7 +2,7 @@ import IPromotionRepository from "src/domain/common/repositories/promotion.repos
 import { ExternalPromotion } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
 import PromotionAggregate from "src/domain/promotion/promotion.agg";
-import { PrismaDatabaseService } from "../common/database/database.service";
+import { PrismaDatabaseService } from "../common/database/prismadb.service";
 import { Injectable } from "@nestjs/common";
 import { DomainError } from "src/domain/common/errors/domain.err";
 

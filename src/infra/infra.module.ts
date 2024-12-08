@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaDatabaseService } from './common/database/database.service';
+import { PrismaDatabaseService } from './common/database/prismadb.service';
 import EventRepository from './repositories/event.repository';
 import IEventRepository from 'src/domain/common/repositories/event.repository.i';
 import GameRepository from './repositories/game.repository';
@@ -13,6 +13,7 @@ import IUserRepository from 'src/domain/common/repositories/user.repository.i';
 import { HashingService } from './common/helper/hasing.service';
 import { UnitOfWork } from './common/unitofwork/unit-of-work';
 import IUnitOfWork from 'src/commands/common/unit-of-work.i';
+import { ConfigModule } from '@nestjs/config';
 
 // Dependency Inversion with NestJS: https://trilon.io/blog/dependency-inversion-principle
 

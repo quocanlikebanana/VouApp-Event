@@ -10,11 +10,14 @@ function removeNullValues<T>(obj: T): Partial<T> {
     ) as Partial<T>;
 }
 
-// Deep check.
+// Deep check. Aware for circular references.
 function checkAllPropertiesNotNull(obj: object): boolean {
     return Object.values(obj).every(value => {
+        debugger;
         if (value && typeof value === 'object' && !Array.isArray(value)) {
-            return checkAllPropertiesNotNull(value);
+            if (value.constructor.name === 'Object') {
+                return checkAllPropertiesNotNull(value);
+            }
         }
         return value != null;
     });

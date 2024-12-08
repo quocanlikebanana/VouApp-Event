@@ -4,7 +4,7 @@ import IEventRepository from "src/domain/common/repositories/event.repository.i"
 import { EventStatus } from "src/domain/common/types/enums";
 import { ExternalPartner } from "src/domain/common/types/external.type";
 import { EventAggregate } from "src/domain/event/event.agg";
-import { PrismaDatabaseService } from "../common/database/database.service";
+import { PrismaDatabaseService } from "../common/database/prismadb.service";
 import { DomainError } from "src/domain/common/errors/domain.err";
 
 type EventDataModel = {
