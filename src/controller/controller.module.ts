@@ -18,8 +18,8 @@ import UserJoinEventCommand from 'src/commands/user/user-join-event.c';
 import UserJoinGameCommand from 'src/commands/user/user-join-game.c';
 import UserLeaveEventCommand from 'src/commands/user/user-leave-event.c';
 import { InfraModule } from 'src/infra/infra.module';
-import PingController from './ping/ping.controller';
-import { EventController } from './event/event.controller';
+import PingController from './routes/ping.controller';
+import { EventController } from './routes/event.controller';
 
 @Module({
 	imports: [
@@ -35,7 +35,6 @@ import { EventController } from './event/event.controller';
 		CreateEventCommand,
 		DeleteEventCommand,
 		UpdateEventCommand,
-		UpdateExGameCommand,
 
 		// External
 		UpdateExGameCommand,

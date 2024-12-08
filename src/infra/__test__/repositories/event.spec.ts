@@ -1,11 +1,12 @@
-import EventRepository from "src/infra/repositories/event.repository";
 import { EventAggregate } from "src/domain/event/event.agg";
 import { Test } from "@nestjs/testing";
 import { InfraModule } from "src/infra/infra.module";
 import { PrismaDatabaseService } from "src/infra/common/database/prismadb.service";
+import { DomainError } from "src/domain/common/errors/domain.err";
+import IEventRepository from "src/domain/common/repositories/event.repository.i";
 
-describe('EventRepository', () => {
-    let eventRepository: EventRepository;
+describe('IEventRepository', () => {
+    let eventRepository: IEventRepository;
     let prismadb: PrismaDatabaseService;
 
     let event1: EventAggregate;
@@ -15,7 +16,7 @@ describe('EventRepository', () => {
             imports: [InfraModule],
         }).compile();
 
-        eventRepository = moduleRef.get<EventRepository>(EventRepository);
+        eventRepository = moduleRef.get<IEventRepository>(IEventRepository);
         prismadb = moduleRef.get<PrismaDatabaseService>(PrismaDatabaseService);
 
         // Initialize the reusable event variable
@@ -31,7 +32,7 @@ describe('EventRepository', () => {
         });
     });
 
-    it('should create an event', async () => {
+    it('should be able to create and delete an event [getById] [createNew] [delete]', async () => {
         const createdEventId = await eventRepository.createNew(event1);
         expect(createdEventId).not.toBeNull();
         expect(createdEventId).not.toBe('');
@@ -39,7 +40,11 @@ describe('EventRepository', () => {
         expect(event_f).not.toBeNull();
         expect(event_f.props.name).toBe(event1.props.name);
         expect(event_f.props.ex_partner.id).toBe(event1.props.ex_partner.id);
+        await eventRepository.delete(event_f);
+        await expect(eventRepository.getById(createdEventId)).rejects.toThrow(DomainError);
     });
+
+
 
     afterEach(async () => {
         await prismadb.event.deleteMany({});
